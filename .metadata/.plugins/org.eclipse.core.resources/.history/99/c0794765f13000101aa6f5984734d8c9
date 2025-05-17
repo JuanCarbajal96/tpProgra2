@@ -1,0 +1,19 @@
+package ar.edu.ungs.prog2.ticketek;
+
+public class Sector {
+	
+	int asientosPorFilas;
+	String[] nombresSectores;
+	int[]capacidadPorSector;
+	int[]incrementoPorSector;
+	
+	public Sector(int asientosPorFilas, String[] nombresSectores, int[] capacidadPorSector, int[] incrementoPorSector) {
+		
+		this.asientosPorFilas = asientosPorFilas;
+		this.nombresSectores = nombresSectores;
+		this.capacidadPorSector = capacidadPorSector;
+		this.incrementoPorSector = incrementoPorSector;		
+		
+	}
+
+}

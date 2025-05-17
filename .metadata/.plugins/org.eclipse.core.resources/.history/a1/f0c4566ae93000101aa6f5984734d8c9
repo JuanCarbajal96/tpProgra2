@@ -1,0 +1,10 @@
+package ar.edu.ungs.prog2.ticketek;
+
+public class Sede {
+	
+	protected Integer capacidadMaxima;
+	protected String direccion;
+	protected String nombre;
+	protected Integer precioBase;
+
+}
