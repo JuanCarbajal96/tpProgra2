@@ -1,0 +1,31 @@
+package ar.edu.ungs.prog2.ticketek;
+
+public class miniEstadio extends Sede {
+
+	protected int asientosPorFila;
+	protected int cantidadDePuestos;
+	protected int valorFijoConsumicion;
+
+	public miniEstadio(String nombre, String direccion, int capacidadMaxima,int asientosPorFila, int cantidadDePuestos, int valorFijoConsumicion, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
+		super(nombre, direccion, capacidadMaxima);
+		this.asientosPorFila = asientosPorFila;
+		this.cantidadDePuestos = cantidadDePuestos;
+		this.valorFijoConsumicion = valorFijoConsumicion;
+
+		for (int i = 0; i < sectores.length; i++) {
+
+			Sector sector = new Sector(sectores[i],capacidad[i],porcentajeAdicional[i], valorFijoConsumicion);
+			
+			this.sectores.add(sector);
+
+		}
+		
+		calcularPrecio(){
+			
+			
+			
+			
+		}
+
+
+	}

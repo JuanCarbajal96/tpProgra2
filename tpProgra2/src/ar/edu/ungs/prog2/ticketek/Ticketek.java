@@ -6,17 +6,18 @@ import java.util.List;
 public class Ticketek implements ITicketek {
 
 	HashMap<String, Sede> sedes = new HashMap<>();
+	HashMap<String, Espectaculo> espectaculos = new HashMap<>();
 	
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
-		
+
 		if (sedes.containsKey(nombre)) {
 			throw new RuntimeException("El nombre ya esta registrado");
 		}		
 		Sede estadio = new Estadio(nombre,direccion,capacidadMaxima);
-		
+
 		sedes.put(nombre,estadio);
-		
+
 	}
 
 	@Override
@@ -26,37 +27,47 @@ public class Ticketek implements ITicketek {
 		if (sedes.containsKey(nombre)) {
 			throw new RuntimeException("El nombre ya esta registrado");
 		}
-		
 		Sede teatro = new Teatro(nombre,direccion,capacidadMaxima, asientosPorFila,sectores,capacidad,porcentajeAdicional);		
+
 		sedes.put(nombre, teatro);
-		
+
 	}
 
-	
+
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad,
 			int[] porcentajeAdicional) {
-		// TODO Auto-generated method stub
-		
+
+		if (sedes.containsKey(nombre)) {
+			throw new RuntimeException("El nombre ya esta registrado");
+		}
+		Sede miniEstadio = new miniEstadio(nombre,direccion,capacidadMaxima,asientosPorFila,cantidadPuestos,precioConsumicion,sectores,capacidad,porcentajeAdicional);
+
+		sedes.put(nombre, miniEstadio);
 	}
 
 	@Override
 	public void registrarUsuario(String email, String nombre, String apellido, String contrasenia) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void registrarEspectaculo(String nombre) {
-		// TODO Auto-generated method stub
 		
+		if (espectaculos.containsKey(nombre)) {
+			throw new RuntimeException("El nombre ya esta registrado");
+		}
+		Espectaculo espectaculo = new Espectaculo(nombre);
+		espectaculos.put(nombre, espectaculo);
+
 	}
 
 	@Override
 	public void agregarFuncion(String nombreEspectaculo, String fecha, String sede, double precioBase) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

@@ -1,0 +1,9 @@
+package ar.edu.ungs.prog2.ticketek;
+
+import java.time.LocalDate;
+
+public class Funcion {
+	
+	LocalDate fecha;
+
+}
