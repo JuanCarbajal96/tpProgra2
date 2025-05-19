@@ -3,20 +3,27 @@ package ar.edu.ungs.prog2.ticketek;
 import java.util.HashSet;
 
 public class Espectaculo {
-	
+
 	String nombre;
 	HashSet<Funcion> funciones;
-	int recaudacion;
-	
-	Espectaculo(String nombre){
-		this.nombre = nombre;
-		this.funciones = new HashSet<>();
-	}
-	
-	void agregarFuncion(String fecha ) {
-		
-		Funcion funcion = new Funcion(fecha);
-		funciones.add(funcion);
-	}
 
+
+	Espectaculo(String nombre){
+		
+		this.nombre = nombre;
+		this.funciones = new HashSet<>();;
+	}
+	
+	@Override 
+	public String toString() {
+		
+		StringBuilder info = new StringBuilder();
+		
+		for (Funcion fun : funciones) {
+						
+			info.append(fun.toString()).append("\n");
+		}
+		return info.toString();
+		
+	}
 }

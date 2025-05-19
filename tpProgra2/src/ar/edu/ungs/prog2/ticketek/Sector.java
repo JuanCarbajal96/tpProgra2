@@ -21,6 +21,13 @@ public class Sector {
 		this.porcentajeAdicional = porcentajeAdicional;
 		this.valorFijoConsumicion = valorFijoConsumicion;
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return  nombre + capacidad ;
+	}
 
 
 

@@ -1,0 +1,68 @@
+package ar.edu.ungs.prog2.ticketek;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Funcion {
+
+	LocalDate fecha;
+	Sede sede;
+	HashMap<String,Integer> entradasVendidas;
+	Funcion(String fecha,Sede sede) {
+
+		this.fecha = LocalDate.parse(fecha);
+		this.sede = sede;
+		this.entradasVendidas = new HashMap<>();
+		this.entradasVendidas.put("Campo", 0);
+		this.entradasVendidas.put("PlateaVIP", 0);
+		this.entradasVendidas.put("Platea Comun", 0);
+		this.entradasVendidas.put("Platea baja", 0);
+		this.entradasVendidas.put("Platea alta", 0);
+
+	}
+
+
+	@Override
+	public String toString() {
+		
+		//Si la sede es en un estadio devuelve un toString() mas simple.
+		if ( sede.getClass().getSimpleName().equals("Estadio")) {
+
+			return  "(" + fecha + ")" + sede.nombre + entradasVendidas.get("Campo") ;
+		}		
+		else {
+			//Crea una cadena con la fecha y el nombre de la sede.
+			StringBuilder info = new StringBuilder("(" + fecha + ")" + sede.nombre + " - ");
+			//recorre el map de entradasVendidas
+			for (Map.Entry<String, Integer> entrada : entradasVendidas.entrySet()) {
+				//Si la clave no es "Campo" agrega a la cadena el sector, la cantidad de
+				// entradas vendidas y la capacidad del sector.
+				if (!entrada.getKey().equals("Campo")) {  // Ver implementacion de equals
+
+					String nombreSector = entrada.getKey();
+					Integer cantidadVendida = entrada.getValue();
+					int capacidad = sede.capacidadSector(nombreSector);
+					
+					info.append(nombreSector).append(": ")
+					.append(cantidadVendida).append(" / ").append(capacidad);
+				}
+			}
+			return info.toString();  
+		}
+	}
+
+	
+	public static void main(String[] args) {
+		
+		Funcion fun = new Funcion();
+		
+		
+	}
+	
+}
+
+
+
+
+

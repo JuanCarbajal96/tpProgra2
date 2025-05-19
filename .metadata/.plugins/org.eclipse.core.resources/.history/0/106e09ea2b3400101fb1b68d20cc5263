@@ -1,0 +1,58 @@
+package ar.edu.ungs.prog2.ticketek;
+
+import java.util.ArrayList;
+
+public class Teatro extends Sede {
+	
+	protected int asientosPorFila;
+	protected ArrayList<Sector> sectores;
+
+	public Teatro(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
+			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
+		super(nombre, direccion, capacidadMaxima);
+		
+		
+		
+		this.asientosPorFila = asientosPorFila;
+		
+		this.sectores = new ArrayList<Sector>();
+			
+		for (int i = 0; i < sectores.length; i++) {
+			
+			Sector sector = new Sector(sectores[i],capacidad[i],porcentajeAdicional[i]);
+			
+			this.sectores.add(sector);
+		} 
+		
+		
+		ArrayList<Sector> getSectores(){
+			
+			return this.sectores;
+			
+		}
+		
+		
+		
+	}
+
+	@Override
+	public String toString() {
+		
+//		StringBuilder info = new StringBuilder();
+//		info.append(this.nombre);
+//		info.append("-");
+//		
+//		for (Sector sec : sectores) {
+//						
+//			info.append(sec.nombre);
+//			info.append("/");
+//			info.append(sec.capacidad);
+//			info.append("|");
+//		}
+		return ;
+	}
+	
+	
+	
+
+}

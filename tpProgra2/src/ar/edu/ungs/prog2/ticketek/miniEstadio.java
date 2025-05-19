@@ -20,12 +20,20 @@ public class miniEstadio extends Sede {
 			Sector sector = new Sector(sectores[i],capacidad[i],porcentajeAdicional[i], precioConsumicion);
 
 			this.sectores.add(sector);
-			
-
 		}
 	}
 
-	
+	@Override
+	public int capacidadSector(String nombreSector) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 }

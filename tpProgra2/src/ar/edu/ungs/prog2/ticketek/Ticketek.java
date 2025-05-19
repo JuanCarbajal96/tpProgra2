@@ -7,7 +7,7 @@ public class Ticketek implements ITicketek {
 
 	HashMap<String, Sede> sedes = new HashMap<>();
 	HashMap<String, Espectaculo> espectaculos = new HashMap<>();
-	
+
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
 
@@ -55,7 +55,7 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public void registrarEspectaculo(String nombre) {
-		
+
 		if (espectaculos.containsKey(nombre)) {
 			throw new RuntimeException("El nombre ya esta registrado");
 		}
@@ -86,8 +86,15 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public String listarFunciones(String nombreEspectaculo) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (espectaculos.containsKey(nombreEspectaculo)){
+
+			return espectaculos.get(nombreEspectaculo).toString();
+		}
+		else {
+
+			return "El espectáculo \"" + nombreEspectaculo + "\" no existe.";
+		}
 	}
 
 	@Override

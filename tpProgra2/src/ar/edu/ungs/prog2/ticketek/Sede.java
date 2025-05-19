@@ -5,7 +5,6 @@ public abstract class Sede {
 	protected int capacidadMaxima;
 	protected String direccion;
 	protected String nombre;
-//	protected int precioBase;
 	
 	public Sede(String nombre, String direccion, int capacidadMaxima ) {
 		this.capacidadMaxima = capacidadMaxima;
@@ -13,6 +12,14 @@ public abstract class Sede {
 		this.direccion = direccion;
 		
 	}
+	
+	public abstract int capacidadSector(String nombreSector);
+
+	@Override
+	public abstract String toString();
+		
+	
+	
 
 	
 	

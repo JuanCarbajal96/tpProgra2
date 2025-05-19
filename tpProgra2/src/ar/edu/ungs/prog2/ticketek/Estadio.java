@@ -9,6 +9,21 @@ public class Estadio extends Sede {
 
 	}
 	
+	@Override
+	public String toString() {
+		
+		return nombre + capacidadMaxima;
+	}
+	
+
+	@Override
+	public int capacidadSector(String nombreSector) {
+		
+		return capacidadMaxima;
+	}
+	
+
+	
 	
 	
 	
