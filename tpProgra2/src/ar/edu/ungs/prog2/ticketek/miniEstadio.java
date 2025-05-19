@@ -15,10 +15,10 @@ public class miniEstadio extends Sede {
 		this.cantidadDePuestos = cantidadDePuestos;
 		this.valorFijoConsumicion = precioConsumicion;
 
+		this.sectores = new ArrayList<>();
 		for (int i = 0; i < sectores.length; i++) {
 
 			Sector sector = new Sector(sectores[i],capacidad[i],porcentajeAdicional[i], precioConsumicion);
-
 			this.sectores.add(sector);
 		}
 	}

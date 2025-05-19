@@ -35,11 +35,14 @@ public class Funcion {
 
 		StringBuilder info = new StringBuilder("(" + fecha + ")" + sede.nombre + " - ");
 		
-		//Si la sede es en un estadio agrega entradas vendidas y capacidad estadio.
+		//Si la sede es en un estadio devuelve fecha, nombre de sede, entradas vendidas y capacidad estadio.
 		if ( sede.getClass().getSimpleName().equals("Estadio")) {
 
-			return info.append(entradasVendidas.get("Campo")).toString();
-		}		
+			info.append(entradasVendidas.get("Campo")).append(sede.capacidadMaxima);
+			return info.toString();
+		}
+		//Si la sede es teatro o miniEstadio devuelve fecha, nombre de sede, sector, cantidad de entradas
+		//vendidas por sector y capacidad del sector.
 		else {
 			
 			for (Map.Entry<String, Integer> entrada : entradasVendidas.entrySet()) {
@@ -47,7 +50,6 @@ public class Funcion {
 				String nombreSector = entrada.getKey();
 				Integer cantidadVendida = entrada.getValue();
 				int capacidad = sede.capacidadSector(nombreSector);
-				//agrega a la cadena el sector, la cantidad de entradas vendidas y la capacidad del sector.
 				info.append(nombreSector).append(": ")
 				.append(cantidadVendida).append(" / ").append(capacidad).append("|");
 			}
