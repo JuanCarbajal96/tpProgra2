@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="Rerun ej14_agregarFuncionesConFechasRepetidas" project="tpProgra2" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="ar.edu.ungs.prog2.ticketek.TicketekTest" time="0.009" displayname="TicketekTest" uniqueid="[engine:junit-vintage]/[runner:ar.edu.ungs.prog2.ticketek.TicketekTest]">
+    <testcase name="ej14_agregarFuncionesConFechasRepetidas" classname="ar.edu.ungs.prog2.ticketek.TicketekTest" time="0.009" displayname="ej14_agregarFuncionesConFechasRepetidas" uniqueid="[engine:junit-vintage]/[runner:ar.edu.ungs.prog2.ticketek.TicketekTest]/[test:ej14_agregarFuncionesConFechasRepetidas(ar.edu.ungs.prog2.ticketek.TicketekTest)]"/>
+  </testsuite>
+</testrun>

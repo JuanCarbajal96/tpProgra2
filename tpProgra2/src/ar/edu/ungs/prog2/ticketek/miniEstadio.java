@@ -25,7 +25,15 @@ public class miniEstadio extends Sede {
 
 	@Override
 	public int capacidadSector(String nombreSector) {
-		// TODO Auto-generated method stub
+		
+		
+		
+		for (Sector sector : sectores) {
+			if(sector.nombre.equals(nombreSector)) {
+				
+				return sector.capacidad;				
+			}
+		}
 		return 0;
 	}
 

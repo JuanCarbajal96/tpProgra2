@@ -1,0 +1,10 @@
+package ar.edu.ungs.prog2.ticketek;
+
+public class Usuario {
+	
+	String email;
+	String nombreYApellido;
+	String contraseña;
+	LinkedHashMap <Integer,Entrada> entradas; 
+
+}

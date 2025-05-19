@@ -1,17 +1,20 @@
 package ar.edu.ungs.prog2.ticketek;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class Espectaculo {
 
 	String nombre;
-	HashSet<Funcion> funciones;
-
+	LinkedHashSet<Funcion> funciones;
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 
 	Espectaculo(String nombre){
 		
 		this.nombre = nombre;
-		this.funciones = new HashSet<>();;
+		this.funciones = new LinkedHashSet<>();;
 	}
 	
 	@Override 
@@ -20,10 +23,33 @@ public class Espectaculo {
 		StringBuilder info = new StringBuilder();
 		
 		for (Funcion fun : funciones) {
-						
-			info.append(fun.toString()).append("\n");
+			String infoFuncion = fun.toString();			
+			info.append(infoFuncion);
+			info.append("\n");
 		}
 		return info.toString();
 		
 	}
+	
+	boolean disponibilidadFecha(String fecha){
+		
+		LocalDate date = LocalDate.parse(fecha,formatter);
+		
+		for ( Funcion funcion : funciones) {
+			
+			if (funcion.fecha.equals(date))
+				return false;
+		}
+		return true;
+	}
+	
+	void agregarFuncion(Funcion funcion) {
+		
+		for (Funcion fun : funciones) {
+			if (fun.fecha.equals(funcion.fecha))
+				throw new RuntimeException ("La fecha no esta disponible");
+		}		
+		funciones.add(funcion);
+	}
+	
 }

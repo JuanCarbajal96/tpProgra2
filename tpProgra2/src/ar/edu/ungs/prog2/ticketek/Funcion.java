@@ -1,20 +1,23 @@
 package ar.edu.ungs.prog2.ticketek;
 
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Funcion {
 
 	LocalDate fecha;
 	Sede sede;
-	HashMap<String,Integer> entradasVendidas;
-
+	LinkedHashMap<String,Integer> entradasVendidas;
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
+	
 	Funcion(String fecha,Sede sede) {
 
-		this.fecha = LocalDate.parse(fecha);
+		this.fecha = LocalDate.parse(fecha, formatter);
 		this.sede = sede;
-		this.entradasVendidas = new HashMap<>();
+		this.entradasVendidas = new LinkedHashMap<>();
 
 		if(sede.getClass().getSimpleName().equals("Estadio")){
 
@@ -22,10 +25,10 @@ public class Funcion {
 		}
 		else {
 
-			this.entradasVendidas.put("PlateaVIP", 0);
-			this.entradasVendidas.put("Platea Comun", 0);
-			this.entradasVendidas.put("Platea baja", 0);
-			this.entradasVendidas.put("Platea alta", 0);
+			this.entradasVendidas.put("VIP", 0);
+			this.entradasVendidas.put("Comun", 0);
+			this.entradasVendidas.put("Baja", 0);
+			this.entradasVendidas.put("Alta", 0);
 		}
 	}
 
@@ -33,7 +36,7 @@ public class Funcion {
 	@Override
 	public String toString() {
 
-		StringBuilder info = new StringBuilder("(" + fecha + ")" + sede.nombre + " - ");
+		StringBuilder info = new StringBuilder(" - " +"(" + fecha.format(formatter) + ") " + sede.nombre + " - ");
 		
 		//Si la sede es en un estadio devuelve fecha, nombre de sede, entradas vendidas y capacidad estadio.
 		if ( sede.getClass().getSimpleName().equals("Estadio")) {
@@ -44,14 +47,19 @@ public class Funcion {
 		//Si la sede es teatro o miniEstadio devuelve fecha, nombre de sede, sector, cantidad de entradas
 		//vendidas por sector y capacidad del sector.
 		else {
-			
+						
 			for (Map.Entry<String, Integer> entrada : entradasVendidas.entrySet()) {
 				
 				String nombreSector = entrada.getKey();
 				Integer cantidadVendida = entrada.getValue();
 				int capacidad = sede.capacidadSector(nombreSector);
-				info.append(nombreSector).append(": ")
-				.append(cantidadVendida).append(" / ").append(capacidad).append("|");
+				info.append(nombreSector);
+				info.append(": ");
+				info.append(cantidadVendida);
+				info.append("/");
+				info.append(capacidad);
+				if (!nombreSector.equals("Alta"))
+				info.append(" | ");
 			}
 		}
 		return info.toString();  

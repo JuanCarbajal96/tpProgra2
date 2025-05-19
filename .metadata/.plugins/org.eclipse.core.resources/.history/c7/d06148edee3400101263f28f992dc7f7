@@ -1,0 +1,100 @@
+package ar.edu.ungs.prog2.ticketek;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Funcion {
+
+	LocalDate fecha;
+	Sede sede;
+	HashMap<String,Integer> entradasVendidas;
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
+	
+	Funcion(String fecha,Sede sede) {
+
+		this.fecha = LocalDate.parse(fecha, formatter);
+		this.sede = sede;
+		this.entradasVendidas = new HashMap<>();
+
+		if(sede.getClass().getSimpleName().equals("Estadio")){
+
+			this.entradasVendidas.put("Campo", 0);
+		}
+		else {
+
+			this.entradasVendidas.put("Baja", 0);
+			this.entradasVendidas.put("Alta", 0);
+			this.entradasVendidas.put("Comun", 0);
+			this.entradasVendidas.put("VIP", 0);
+		}
+	}
+
+
+	@Override
+	public String toString() {
+
+		StringBuilder info = new StringBuilder(" - " +"(" + fecha.format(formatter) + ") " + sede.nombre + " - ");
+		
+		//Si la sede es en un estadio devuelve fecha, nombre de sede, entradas vendidas y capacidad estadio.
+		if ( sede.getClass().getSimpleName().equals("Estadio")) {
+
+			info.append(entradasVendidas.get("Campo")).append(sede.capacidadMaxima);
+			return info.toString();
+		}
+		//Si la sede es teatro o miniEstadio devuelve fecha, nombre de sede, sector, cantidad de entradas
+		//vendidas por sector y capacidad del sector.
+		else {
+					
+			info.append("VIP");
+			info.append(": ");
+			Integer vendidasVIP = entradasVendidas.get("VIP");
+			info.append(vendidasVIP);
+			info.append("/");
+			int capacidadVIP = sede.capacidadSector("VIP");
+			info.append(capacidadVIP);
+			info.append(" | ");
+						
+			info.append("Comun");
+			info.append(": ");
+			Integer vendidasComún = entradasVendidas.get("Comun");
+			info.append(vendidasComún);
+			info.append("/");
+			
+			info.append("Alta");
+			info.append(": ");
+			Integer vendidasAlta = entradasVendidas.get("Alta");
+			info.append(vendidasAlta);
+			info.append("/");
+			
+			info.append("Baja");
+			info.append(": ");
+			Integer vendidasBaja = entradasVendidas.get("Baja");
+			info.append(vendidasBaja);
+			info.append("/");
+			
+//			for (Map.Entry<String, Integer> entrada : entradasVendidas.entrySet()) {
+//				
+//				String nombreSector = entrada.getKey();
+//				Integer cantidadVendida = entrada.getValue();
+//				int capacidad = sede.capacidadSector(nombreSector);
+//				info.append(nombreSector);
+//				info.append(": ");
+//				info.append(cantidadVendida);
+//				info.append("/");
+//				info.append(capacidad);
+//				info.append(" | ");
+//			}
+		}
+		return info.toString();  
+	}
+}
+
+
+
+
+
+
+
+

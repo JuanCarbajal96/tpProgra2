@@ -3,10 +3,13 @@ package ar.edu.ungs.prog2.ticketek;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 public class Ticketek implements ITicketek {
 
 	HashMap<String, Sede> sedes = new HashMap<>();
 	HashMap<String, Espectaculo> espectaculos = new HashMap<>();
+	HashMap<String,Usuario> usuarios = new HashMap<>();
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
@@ -43,14 +46,17 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("El nombre ya esta registrado");
 		}
 		Sede miniEstadio = new miniEstadio(nombre,direccion,capacidadMaxima,asientosPorFila,cantidadPuestos,precioConsumicion,sectores,capacidad,porcentajeAdicional);
-
 		sedes.put(nombre, miniEstadio);
 	}
 
 	@Override
 	public void registrarUsuario(String email, String nombre, String apellido, String contrasenia) {
-		// TODO Auto-generated method stub
+		if (usuarios.containsKey(email)) {
 
+			throw new RuntimeException("el email ya existe en nuestra base de datos");
+		}
+		Usuario usuario = new Usuario(email,nombre,apellido,contrasenia);
+		usuarios.put(email, usuario);
 	}
 
 	@Override
@@ -66,7 +72,17 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public void agregarFuncion(String nombreEspectaculo, String fecha, String sede, double precioBase) {
-		// TODO Auto-generated method stub
+
+		if (!espectaculos.containsKey(nombreEspectaculo) || !sedes.containsKey(sede)) {
+
+			throw new RuntimeException("el espectaculo o la sede no estan registrados");
+		}
+		else if(!espectaculos.get(nombreEspectaculo).disponibilidadFecha(fecha)) {
+
+			throw new RuntimeException("la fecha no esta disponible");
+		}
+		Funcion funcion = new Funcion(fecha,sedes.get(sede));
+		espectaculos.get(nombreEspectaculo).agregarFuncion(funcion);
 
 	}
 
