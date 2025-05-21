@@ -8,7 +8,7 @@ public class Usuario {
 	String nombre;
 	String apellido;
 	String contraseña;
-	LinkedHashMap <Integer,Entrada> entradas;
+	LinkedHashMap <Integer,IEntrada> entradas = new LinkedHashMap<>();
 	
 	Usuario(String email,String nombre,String apellido,String contraseña){
 		

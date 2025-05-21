@@ -2,7 +2,6 @@ package ar.edu.ungs.prog2.ticketek;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -10,21 +9,23 @@ public class Funcion {
 
 	LocalDate fecha;
 	Sede sede;
-	LinkedHashMap<String,Integer> entradasVendidas;
+	LinkedHashMap<String,Integer> entradasVendidas = new LinkedHashMap<>();
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
-	
-	Funcion(String fecha,Sede sede) {
+	double precioBase;
+//	ArrayList<Integer> asientosDisponibles;
+
+	Funcion(String fecha,Sede sede,double precioBase) {
 
 		this.fecha = LocalDate.parse(fecha, formatter);
 		this.sede = sede;
-		this.entradasVendidas = new LinkedHashMap<>();
+		this.precioBase = precioBase;
+//		this.asientosDisponibles = new ArrayList<>(sede.capacidadMaxima);
 
 		if(sede.getClass().getSimpleName().equals("Estadio")){
 
 			this.entradasVendidas.put("Campo", 0);
 		}
-		else {
-
+		else {			
 			this.entradasVendidas.put("VIP", 0);
 			this.entradasVendidas.put("Comun", 0);
 			this.entradasVendidas.put("Baja", 0);
@@ -37,7 +38,7 @@ public class Funcion {
 	public String toString() {
 
 		StringBuilder info = new StringBuilder(" - " +"(" + fecha.format(formatter) + ") " + sede.nombre + " - ");
-		
+
 		//Si la sede es en un estadio devuelve fecha, nombre de sede, entradas vendidas y capacidad estadio.
 		if ( sede.getClass().getSimpleName().equals("Estadio")) {
 
@@ -47,9 +48,8 @@ public class Funcion {
 		//Si la sede es teatro o miniEstadio devuelve fecha, nombre de sede, sector, cantidad de entradas
 		//vendidas por sector y capacidad del sector.
 		else {
-						
 			for (Map.Entry<String, Integer> entrada : entradasVendidas.entrySet()) {
-				
+
 				String nombreSector = entrada.getKey();
 				Integer cantidadVendida = entrada.getValue();
 				int capacidad = sede.capacidadSector(nombreSector);
@@ -59,11 +59,20 @@ public class Funcion {
 				info.append("/");
 				info.append(capacidad);
 				if (!nombreSector.equals("Alta"))
-				info.append(" | ");
+					info.append(" | ");
 			}
 		}
 		return info.toString();  
 	}
+
+
+	public void agregarEntradaVendida(String nombreSector) {
+		
+		entradasVendidas.put(nombreSector, entradasVendidas.get(nombreSector) + 1);	
+	}
+
+
+	
 }
 
 

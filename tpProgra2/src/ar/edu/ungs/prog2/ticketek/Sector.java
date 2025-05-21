@@ -4,7 +4,7 @@ public class Sector {
 
 	protected String nombre;
 	protected int capacidad;
-	protected	int porcentajeAdicional;
+	protected int porcentajeAdicional;
 	protected double valorFijoConsumicion;
 
 	public Sector( String nombre, int capacidad, int porcentajeAdicional) {
@@ -22,13 +22,12 @@ public class Sector {
 		this.valorFijoConsumicion = valorFijoConsumicion;
 	}
 	
-	
-
 	@Override
 	public String toString() {
 		return  nombre + capacidad ;
 	}
 
+	
 
 
 }

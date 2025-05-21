@@ -26,28 +26,41 @@ public class Teatro extends Sede {
 	}
 	@Override
 	public int capacidadSector(String nombreSector) {
-		
+
 		for (Sector sector : sectores) {
-			
-			if (sector.equals(nombreSector)) {
-				
+
+			if (sector.nombre.equals(nombreSector)) {
+
 				return sector.capacidad;
 			}			
 		}		
 		return 0;		
 	}
 
-	
+
 
 	@Override
 	public String toString() {
-				
+
 		return nombre ;
 
-		
+
 	}
+	@Override
+	public double porcentajeAdicional(String sector) {
 
+		for (Sector sec : sectores) {
 
+			if(sec.nombre.equals(sector)) {
+				return sec.porcentajeAdicional;
+			}			
+		}
+		return 0;
+	}
+	public int getFila(int asiento) {
+			
+		return asiento / asientosPorFila;
+	}
 
 
 }

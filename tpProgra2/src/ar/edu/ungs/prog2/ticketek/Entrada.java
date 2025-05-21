@@ -2,18 +2,51 @@ package ar.edu.ungs.prog2.ticketek;
 
 public class Entrada implements IEntrada {
 	
+	Integer codigo;
+	String nombreEspectaculo;
+	String fecha;
+	Sede sede;
+	String sector;
+	double precio;
+	int nroAsiento;
+	int nroFila;
 	
+
+	public Entrada(Integer codigo, String nombreEspectaculo, String fecha, Sede sede, double precio) {
+		super();
+		this.codigo = codigo;
+		this.nombreEspectaculo = nombreEspectaculo;
+		this.fecha = fecha;
+		this.sede = sede;
+		this.precio = precio;
+	}
+
+	public Entrada(Integer codigo, String nombreEspectaculo, String fecha, Sede sede,String sector,int nroFila, int nroAsiento, double precio) {
+		super();
+		this.codigo = codigo;
+		this.nombreEspectaculo = nombreEspectaculo;
+		this.fecha = fecha;
+		this.sede = sede;
+		this.sector = sector;
+		this.nroAsiento = nroAsiento;
+		this.precio = precio;
+		this.nroFila = nroFila;
+	}
 	
 
 	@Override
-	public double precio() {
-		// TODO Auto-generated method stub
-		return 0;
+	public double precio() {	
+		
+		return this.precio;
 	}
 
 	@Override
 	public String ubicacion() {
-		// TODO Auto-generated method stub
+		if(sede.getClass().getSimpleName().equals("Estadio"))
+			return "CAMPO";
+		else if(sede.getClass().getSimpleName().equals("Teatro"))
+			return this.sector + "f: " + this.nroFila + "a: " + this.nroAsiento; 
+			
 		return null;
 	}
 

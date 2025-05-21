@@ -2,14 +2,14 @@ package ar.edu.ungs.prog2.ticketek;
 
 import java.util.ArrayList;
 
-public class miniEstadio extends Sede {
+public class MiniEstadio extends Sede {
 
 	protected int asientosPorFila;
 	protected int cantidadDePuestos;
 	protected double valorFijoConsumicion;
 	protected ArrayList<Sector> sectores;
 
-	public miniEstadio(String nombre, String direccion, int capacidadMaxima,int asientosPorFila, int cantidadDePuestos, double precioConsumicion, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
+	public MiniEstadio(String nombre, String direccion, int capacidadMaxima,int asientosPorFila, int cantidadDePuestos, double precioConsumicion, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
 		super(nombre, direccion, capacidadMaxima);
 		this.asientosPorFila = asientosPorFila;
 		this.cantidadDePuestos = cantidadDePuestos;
@@ -25,12 +25,12 @@ public class miniEstadio extends Sede {
 
 	@Override
 	public int capacidadSector(String nombreSector) {
-		
-		
-		
+
+
+
 		for (Sector sector : sectores) {
 			if(sector.nombre.equals(nombreSector)) {
-				
+
 				return sector.capacidad;				
 			}
 		}
@@ -42,6 +42,29 @@ public class miniEstadio extends Sede {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public double porcentajeAdicional(String nombreSede) {
+		for (Sector sec : sectores) {
+
+			if(sec.nombre.equals(nombreSede)) {
+				return sec.porcentajeAdicional + this.valorFijoConsumicion;
+			}			
+		}
+		return 0;
+	}
+
+	public int getFila(int asiento) {
+
+		return asiento / asientosPorFila;
+	}
+
+	public double getvalorFijoConsumicion() {
+		
+		return this.valorFijoConsumicion;
+	}
+
+
 
 
 }

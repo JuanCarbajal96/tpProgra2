@@ -21,6 +21,12 @@ public class Estadio extends Sede {
 		
 		return capacidadMaxima;
 	}
+
+	@Override
+	public double porcentajeAdicional(String nombreSede) {
+	
+		return 0;
+	}
 	
 
 	

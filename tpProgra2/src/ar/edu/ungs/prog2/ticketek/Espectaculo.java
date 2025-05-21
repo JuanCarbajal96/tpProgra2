@@ -2,7 +2,6 @@ package ar.edu.ungs.prog2.ticketek;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 public class Espectaculo {
@@ -12,44 +11,91 @@ public class Espectaculo {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 
 	Espectaculo(String nombre){
-		
+
 		this.nombre = nombre;
 		this.funciones = new LinkedHashSet<>();;
 	}
-	
+
 	@Override 
 	public String toString() {
-		
+
 		StringBuilder info = new StringBuilder();
-		
-		for (Funcion fun : funciones) {
-			String infoFuncion = fun.toString();			
-			info.append(infoFuncion);
+
+		for (Funcion funcion : funciones) {
+			
+			info.append(funcion.toString());
 			info.append("\n");
 		}
 		return info.toString();
-		
+
 	}
-	
-	boolean disponibilidadFecha(String fecha){
-		
-		LocalDate date = LocalDate.parse(fecha,formatter);
-		
-		for ( Funcion funcion : funciones) {
-			
-			if (funcion.fecha.equals(date))
-				return false;
-		}
-		return true;
-	}
-	
-	void agregarFuncion(Funcion funcion) {
-		
+
+	public boolean hayFuncion(String fecha){
+
 		for (Funcion fun : funciones) {
-			if (fun.fecha.equals(funcion.fecha))
+			if (fun.fecha.equals(LocalDate.parse(fecha,formatter)))
+				return true;
+		}
+		return false;
+	}
+
+	void agregarFuncion(Funcion funcion) {
+
+		for (Funcion fun : funciones) {
+			if (fun.fecha.equals(funcion.fecha) && fun.sede.equals(funcion.sede))
 				throw new RuntimeException ("La fecha no esta disponible");
-		}		
+		}
 		funciones.add(funcion);
 	}
-	
+
+	Sede sedeFuncion(String fecha){
+
+		for (Funcion funcion : funciones) {
+			if (funcion.fecha.equals(LocalDate.parse(fecha,formatter))) {
+				return funcion.sede;
+			}
+		}
+		return null;
+	}
+
+	double precioFuncion(String fecha) {
+	    
+	    for (Funcion funcion : funciones) {
+	        if (funcion.fecha.equals(LocalDate.parse(fecha, formatter))) {
+	            return funcion.precioBase;
+	        }
+	    }
+
+	    throw new RuntimeException("No se encontró función para la fecha: " + fecha);
+	}
+
+
+	double precioFuncion(String fecha, String sector) {
+
+		LocalDate date = LocalDate.parse(fecha,formatter);
+		for ( Funcion funcion : funciones) {
+			if(funcion.fecha.equals(date))
+				if(funcion.sede.getClass().getSimpleName().equals("Teatro")) {
+					return funcion.precioBase * (1 + (funcion.sede.porcentajeAdicional(sector)/100));
+				}
+				else if(funcion.sede.getClass().getSimpleName().equals("MiniEstadio")) {
+					
+					MiniEstadio miniEstadio = (MiniEstadio) funcion.sede;
+					return funcion.precioBase + miniEstadio.getvalorFijoConsumicion() * (1 + (funcion.sede.porcentajeAdicional(sector)/100)); 
+				}
+		}
+		 throw new RuntimeException("No se encontró función para la fecha: " + fecha);
+	}
+
+	public void agregarEntradaVendida(String sector,String fecha) {
+		for ( Funcion funcion : funciones) 
+			if(funcion.fecha.equals(LocalDate.parse(fecha,formatter))) {
+				funcion.agregarEntradaVendida(sector);
+
+			}
+
+	}
+
 }
+
+
