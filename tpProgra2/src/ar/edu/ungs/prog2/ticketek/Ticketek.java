@@ -1,7 +1,7 @@
 package ar.edu.ungs.prog2.ticketek;
 
-
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +13,7 @@ public class Ticketek implements ITicketek {
 	HashMap<String, Espectaculo> espectaculos = new HashMap<>();
 	HashMap<String,Usuario> usuarios = new HashMap<>();
 	private int codigoEntrada = 0; 
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
@@ -173,36 +174,76 @@ public class Ticketek implements ITicketek {
 		return nuevasEntradas;
 	}
 
-@Override
-public String listarFunciones(String nombreEspectaculo) {
+	@Override
+	public String listarFunciones(String nombreEspectaculo) {
 
-	if (espectaculos.containsKey(nombreEspectaculo)){
+		if (espectaculos.containsKey(nombreEspectaculo)){
 
-		return espectaculos.get(nombreEspectaculo).toString();
+			return espectaculos.get(nombreEspectaculo).toString();
+		}
+		else {
+
+			return "El espectáculo \"" + nombreEspectaculo + "\" no existe.";
+		}
 	}
-	else {
 
-		return "El espectáculo \"" + nombreEspectaculo + "\" no existe.";
+	@Override
+	public List<IEntrada> listarEntradasEspectaculo(String nombreEspectaculo) {
+
+		List<IEntrada> entradasEspectaculo = new ArrayList<>();
+		for (Usuario usuario : usuarios.values()) {
+			for (IEntrada entrada : usuario.entradas.values()) {
+
+				Entrada entradaUsuario = (Entrada) entrada;
+				if(entradaUsuario.nombreEspectaculo.equals(nombreEspectaculo)) {					
+					entradasEspectaculo.add(entrada);
+				}
+			}
+		}
+		return entradasEspectaculo;
 	}
-}
 
-@Override
-public List<IEntrada> listarEntradasEspectaculo(String nombreEspectaculo) {
-	// TODO Auto-generated method stub
-	return null;
-}
+	@Override
+	public List<IEntrada> listarEntradasFuturas(String email, String contrasenia) {
 
-@Override
-public List<IEntrada> listarEntradasFuturas(String email, String contrasenia) {
-	// TODO Auto-generated method stub
-	return null;
-}
+		if(usuarios.get(email) == null || !usuarios.get(email).contraseña.equals(contrasenia)) {
+			throw new RuntimeException("el usuario no esta registrado o la contraseña no es valida ");
+		}
 
-@Override
-public List<IEntrada> listarTodasLasEntradasDelUsuario(String email, String contrasenia) {
-	// TODO Auto-generated method stub
-	return null;
-}
+		List<IEntrada> entradasFuturas = new ArrayList<>();		
+		Usuario usuario = usuarios.get(email);
+		LocalDate hoy = LocalDate.parse(java.time.LocalDate.now().toString());
+		hoy.format(formatter);
+
+		for (IEntrada entrada : usuario.entradas.values()) {
+
+			Entrada entrad = (Entrada) entrada;
+			if(entrad.fecha.compareTo(hoy) > 0) {
+				entradasFuturas.add(entrada);
+			}
+		}								
+		return entradasFuturas;
+	}
+
+	@Override
+	public List<IEntrada> listarTodasLasEntradasDelUsuario(String email, String contrasenia) {
+		
+		if(usuarios.get(email) == null || !usuarios.get(email).contraseña.equals(contrasenia)) {
+			throw new RuntimeException("el usuario no esta registrado o la contraseña no es valida ");
+		}
+
+		List<IEntrada> entradasUsuario = new ArrayList<>();		
+		Usuario usuario = usuarios.get(email);
+
+		for (IEntrada entrada : usuario.entradas.values()) {
+	
+			entradasUsuario.add(entrada);
+		}
+		return entradasUsuario;
+	}								
+	
+
+
 
 @Override
 public boolean anularEntrada(IEntrada entrada, String contrasenia) {

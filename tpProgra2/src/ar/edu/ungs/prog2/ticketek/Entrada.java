@@ -1,22 +1,26 @@
 package ar.edu.ungs.prog2.ticketek;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Entrada implements IEntrada {
 	
 	Integer codigo;
 	String nombreEspectaculo;
-	String fecha;
+	LocalDate fecha;
 	Sede sede;
 	String sector;
 	double precio;
 	int nroAsiento;
 	int nroFila;
-	
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
+		
 
 	public Entrada(Integer codigo, String nombreEspectaculo, String fecha, Sede sede, double precio) {
 		super();
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
-		this.fecha = fecha;
+		this.fecha = LocalDate.parse(fecha,formatter);
 		this.sede = sede;
 		this.precio = precio;
 	}
@@ -25,7 +29,7 @@ public class Entrada implements IEntrada {
 		super();
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
-		this.fecha = fecha;
+		this.fecha = LocalDate.parse(fecha,formatter);
 		this.sede = sede;
 		this.sector = sector;
 		this.nroAsiento = nroAsiento;
@@ -50,4 +54,14 @@ public class Entrada implements IEntrada {
 		return null;
 	}
 
+	@Override
+	public String toString() {
+		
+		LocalDate hoy = LocalDate.now();
+		if (fecha.isBefore(hoy)) {
+			return "- " + codigo + " - " + nombreEspectaculo + " - " + fecha + " P" + " - " + sede.nombre + " - " + this.ubicacion() ;
+		}
+		return "- " + codigo + " - " + nombreEspectaculo + " - " + fecha + " - " + sede.nombre + " - " + this.ubicacion() ;
+			
+	}
 }

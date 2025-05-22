@@ -22,7 +22,7 @@ public class Espectaculo {
 		StringBuilder info = new StringBuilder();
 
 		for (Funcion funcion : funciones) {
-			
+
 			info.append(funcion.toString());
 			info.append("\n");
 		}
@@ -59,14 +59,14 @@ public class Espectaculo {
 	}
 
 	double precioFuncion(String fecha) {
-	    
-	    for (Funcion funcion : funciones) {
-	        if (funcion.fecha.equals(LocalDate.parse(fecha, formatter))) {
-	            return funcion.precioBase;
-	        }
-	    }
 
-	    throw new RuntimeException("No se encontró función para la fecha: " + fecha);
+		for (Funcion funcion : funciones) {
+			if (funcion.fecha.equals(LocalDate.parse(fecha, formatter))) {
+				return funcion.precioBase;
+			}
+		}
+
+		throw new RuntimeException("No se encontró función para la fecha: " + fecha);
 	}
 
 
@@ -79,12 +79,12 @@ public class Espectaculo {
 					return funcion.precioBase * (1 + (funcion.sede.porcentajeAdicional(sector)/100));
 				}
 				else if(funcion.sede.getClass().getSimpleName().equals("MiniEstadio")) {
-					
+
 					MiniEstadio miniEstadio = (MiniEstadio) funcion.sede;
 					return funcion.precioBase + miniEstadio.getvalorFijoConsumicion() * (1 + (funcion.sede.porcentajeAdicional(sector)/100)); 
 				}
 		}
-		 throw new RuntimeException("No se encontró función para la fecha: " + fecha);
+		throw new RuntimeException("No se encontró función para la fecha: " + fecha);
 	}
 
 	public void agregarEntradaVendida(String sector,String fecha) {
@@ -96,6 +96,11 @@ public class Espectaculo {
 
 	}
 
+
+
+
 }
+
+
 
 

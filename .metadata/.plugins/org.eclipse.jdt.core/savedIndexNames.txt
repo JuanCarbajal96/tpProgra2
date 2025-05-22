@@ -16,5 +16,4 @@ INDEX VERSION 1.134+C:\Users\Juan\Desktop\TP Progra2\.metadata\.plugins\org.ecli
 893537075.index
 4286009085.index
 2757252858.index
-2052444410.index
 2327774090.index

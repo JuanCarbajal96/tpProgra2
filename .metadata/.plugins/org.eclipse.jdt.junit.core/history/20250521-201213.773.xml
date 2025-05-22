@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="Rerun ej06_listarEntradasFuturas" project="tpProgra2" tests="1" started="1" failures="1" errors="0" ignored="0">
+  <testsuite name="ar.edu.ungs.prog2.ticketek.TicketekTest" time="0.027" displayname="TicketekTest" uniqueid="[engine:junit-vintage]/[runner:ar.edu.ungs.prog2.ticketek.TicketekTest]">
+    <testcase name="ej06_listarEntradasFuturas" classname="ar.edu.ungs.prog2.ticketek.TicketekTest" time="0.027" displayname="ej06_listarEntradasFuturas" uniqueid="[engine:junit-vintage]/[runner:ar.edu.ungs.prog2.ticketek.TicketekTest]/[test:ej06_listarEntradasFuturas(ar.edu.ungs.prog2.ticketek.TicketekTest)]">
+      <failure>java.lang.AssertionError: expected:&lt;11&gt; but was:&lt;8&gt;&#13;
+	at org.junit.Assert.fail(Assert.java:89)&#13;
+	at org.junit.Assert.failNotEquals(Assert.java:835)&#13;
+	at org.junit.Assert.assertEquals(Assert.java:647)&#13;
+	at org.junit.Assert.assertEquals(Assert.java:633)&#13;
+	at ar.edu.ungs.prog2.ticketek.TicketekTest.ej06_listarEntradasFuturas(TicketekTest.java:172)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:578)&#13;
+&#13;
+</failure>
+    </testcase>
+  </testsuite>
+</testrun>
