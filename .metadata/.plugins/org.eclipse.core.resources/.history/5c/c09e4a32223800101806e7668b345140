@@ -63,7 +63,7 @@ public class Funcion {
 		return info.toString();  
 	}
 	
- 
+
 	public double precio(String sector) {
 
 		return this.precioBase * (1 + (this.sede.porcentajeAdicional(sector)/100));

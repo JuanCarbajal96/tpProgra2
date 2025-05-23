@@ -413,8 +413,8 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public double totalRecaudadoPorSede(String nombreEspectaculo, String nombreSede) {
-		
-		return espectaculos.get(nombreEspectaculo).recaudacion(nombreSede);
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

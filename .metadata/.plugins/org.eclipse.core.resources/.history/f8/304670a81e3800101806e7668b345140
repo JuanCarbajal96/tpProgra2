@@ -11,14 +11,14 @@ public class Espectaculo {
 	LinkedHashMap<LocalDate,Funcion> funciones;
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 
-
+	
 	Espectaculo(String nombre){
 
 		this.nombre = nombre;
 		this.funciones = new LinkedHashMap<>();;
 	}
 
-
+	
 	@Override 
 	public String toString() {
 
@@ -32,7 +32,7 @@ public class Espectaculo {
 		return info.toString();
 	}
 
-
+	
 	public boolean hayFuncion(String fecha){
 
 		for (Funcion fun : funciones.values()) {
@@ -42,7 +42,7 @@ public class Espectaculo {
 		return false;
 	}
 
-
+	
 	void agregarFuncion(Funcion funcion) {
 
 		for (Funcion fun : funciones.values()) {
@@ -52,7 +52,7 @@ public class Espectaculo {
 		funciones.put(funcion.fecha,funcion);
 	}
 
-
+	
 	Sede sedeFuncion(String fecha){
 
 		for (Funcion funcion : funciones.values()) {
@@ -63,7 +63,7 @@ public class Espectaculo {
 		return null;
 	}
 
-
+	
 	double precioFuncion(String fecha) {
 
 		for (Funcion funcion : funciones.values()) {
@@ -87,7 +87,7 @@ public class Espectaculo {
 				else if(funcion.sede.getClass().getSimpleName().equals("MiniEstadio")) {
 
 					MiniEstadio miniEstadio = (MiniEstadio) funcion.sede;
-					return (funcion.precioBase + miniEstadio.getvalorFijoConsumicion()) * (1 + (funcion.sede.porcentajeAdicional(sector)/100)); 
+					return funcion.precioBase + miniEstadio.getvalorFijoConsumicion() * (1 + (funcion.sede.porcentajeAdicional(sector)/100)); 
 				}
 		}
 		throw new RuntimeException("No se encontró función para la fecha: " + fecha);
@@ -99,34 +99,10 @@ public class Espectaculo {
 				funcion.agregarVenta(sector);
 			}
 	}
-
+	
 	public void quitarVenta(LocalDate fecha,String sector){
-
+		
 		Funcion funcion = funciones.get(fecha);
 		funcion.quitarVenta(sector);
-	}
-
-
-	public double recaudacion() {
-
-		double totalRecaudado = 0;
-		for (Funcion funcion : funciones.values()) {
-
-			totalRecaudado += funcion.recaudacion();		
-		}
-		return totalRecaudado;	
-	}
-
-
-	public double recaudacion(String nombreSede) {
-
-		double totalRecaudado = 0;		
-		for (Funcion funcion : funciones.values()) {
-
-			if(funcion.sede.nombre.equals(nombreSede)) {				
-				totalRecaudado += funcion.recaudacion();
-			}			
-		}
-		return totalRecaudado;
 	}
 }

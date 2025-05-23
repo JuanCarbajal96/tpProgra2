@@ -400,21 +400,20 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fecha, String sector) {
-		
-		return espectaculos.get(nombreEspectaculo).precioFuncion(fecha,sector);
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public double totalRecaudado(String nombreEspectaculo) {
-		
-		return espectaculos.get(nombreEspectaculo).recaudacion();
-		
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public double totalRecaudadoPorSede(String nombreEspectaculo, String nombreSede) {
-		
-		return espectaculos.get(nombreEspectaculo).recaudacion(nombreSede);
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

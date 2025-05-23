@@ -63,7 +63,7 @@ public class Funcion {
 		return info.toString();  
 	}
 	
- 
+
 	public double precio(String sector) {
 
 		return this.precioBase * (1 + (this.sede.porcentajeAdicional(sector)/100));
@@ -80,30 +80,20 @@ public class Funcion {
 		Integer cantidadActual = entradasVendidas.get(sector);
 		if (cantidadActual > 0)
 			entradasVendidas.put(sector, entradasVendidas.get(sector) - 1);
+
 	}
 
 
-	public double recaudacion() {
-	    double recaudacion = 0;
 
-	    for (Map.Entry<String, Integer> entrada : entradasVendidas.entrySet()) {
-	        String sector = entrada.getKey();
-	        int totalVendido = entrada.getValue();
 
-	        if (sede instanceof Estadio) {
-	            recaudacion += precioBase * totalVendido;
-	        } 
-	        else if (sede instanceof Teatro) {
-	            double adicional = 1 + sede.porcentajeAdicional(sector) / 100.0;
-	            recaudacion += totalVendido * (precioBase * ( adicional));
-	        } 
-	        else if (sede instanceof MiniEstadio) {
-	            MiniEstadio mini = (MiniEstadio) sede;
-	            double adicional = 1 + sede.porcentajeAdicional(sector) / 100.0;
-	            recaudacion += totalVendido * ((precioBase * ( adicional)) + mini.getvalorFijoConsumicion());
-	        }
-	    }
 
-	    return recaudacion;
-	}
+
 }
+
+
+
+
+
+
+
+

@@ -48,7 +48,7 @@ public class MiniEstadio extends Sede {
 		for (Sector sec : sectores) {
 
 			if(sec.nombre.equals(nombreSede)) {
-				return sec.porcentajeAdicional;
+				return sec.porcentajeAdicional + this.valorFijoConsumicion;
 			}			
 		}
 		return 0;

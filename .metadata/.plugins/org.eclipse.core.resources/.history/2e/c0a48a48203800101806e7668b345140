@@ -63,7 +63,7 @@ public class Funcion {
 		return info.toString();  
 	}
 	
- 
+
 	public double precio(String sector) {
 
 		return this.precioBase * (1 + (this.sede.porcentajeAdicional(sector)/100));
@@ -80,6 +80,7 @@ public class Funcion {
 		Integer cantidadActual = entradasVendidas.get(sector);
 		if (cantidadActual > 0)
 			entradasVendidas.put(sector, entradasVendidas.get(sector) - 1);
+
 	}
 
 
@@ -106,4 +107,18 @@ public class Funcion {
 
 	    return recaudacion;
 	}
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
