@@ -1,0 +1,12 @@
+package ar.edu.ungs.prog2.ticketek;
+
+public class Fecha {
+	
+	LocalDate fecha;
+	
+	Fecha (String fecha){
+		
+		this.fecha =
+	}
+
+}

@@ -1,0 +1,132 @@
+package ar.edu.ungs.prog2.ticketek;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+
+public class Espectaculo {
+
+	String nombre;
+	LinkedHashMap<LocalDate,Funcion> funciones;
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+
+
+	Espectaculo(String nombre){
+
+		this.nombre = nombre;
+		this.funciones = new LinkedHashMap<>();;
+	}
+
+
+	@Override 
+	public String toString() {
+
+		StringBuilder info = new StringBuilder();
+
+		for (Funcion funcion : funciones.values()) {
+
+			info.append(funcion.toString());
+			info.append("\n");
+		}
+		return info.toString();
+	}
+
+
+	public boolean hayFuncion(Fecha fecha){
+
+		for (Funcion fun : funciones.values()) {
+			if (fun.fecha.equals(fecha))
+				return true;
+		}
+		return false;
+	}
+
+
+	void agregarFuncion(Funcion funcion) {
+
+		for (Funcion fun : funciones.values()) {
+			if (fun.fecha.equals(funcion.fecha) && fun.sede.equals(funcion.sede))
+				throw new RuntimeException ("La fecha no esta disponible");
+		}
+		funciones.put(funcion.fecha,funcion);
+	}
+
+
+	Sede sedeFuncion(String fecha){
+
+		for (Funcion funcion : funciones.values()) {
+			if (funcion.fecha.equals(LocalDate.parse(fecha,formatter))) {
+				return funcion.sede;
+			}
+		}
+		return null;
+	}
+
+
+	double precioFuncion(String fecha) {
+
+		for (Funcion funcion : funciones.values()) {
+			if (funcion.fecha.equals(LocalDate.parse(fecha, formatter))) {
+				return funcion.precioBase;
+			}
+		}
+
+		throw new RuntimeException("No se encontró función para la fecha: " + fecha);
+	}
+
+
+	double precioFuncion(String fecha, String sector) {
+
+		LocalDate date = LocalDate.parse(fecha,formatter);
+		for ( Funcion funcion : funciones.values()) {
+			if(funcion.fecha.equals(date))
+				if(funcion.sede.getClass().getSimpleName().equals("Teatro")) {
+					return funcion.precio(sector);
+				}
+				else if(funcion.sede.getClass().getSimpleName().equals("MiniEstadio")) {
+
+					MiniEstadio miniEstadio = (MiniEstadio) funcion.sede;
+					return (funcion.precioBase + miniEstadio.getvalorFijoConsumicion()) * (1 + (funcion.sede.porcentajeAdicional(sector)/100)); 
+				}
+		}
+		throw new RuntimeException("No se encontró función para la fecha: " + fecha);
+	}
+
+	public void agregarVenta(LocalDate fecha,String sector) {
+		for ( Funcion funcion : funciones.values()) 
+			if(funcion.fecha.equals(fecha)) {
+				funcion.agregarVenta(sector);
+			}
+	}
+
+	public void quitarVenta(LocalDate fecha,String sector){
+
+		Funcion funcion = funciones.get(fecha);
+		funcion.quitarVenta(sector);
+	}
+
+
+	public double recaudacion() {
+
+		double totalRecaudado = 0;
+		for (Funcion funcion : funciones.values()) {
+
+			totalRecaudado += funcion.recaudacion();		
+		}
+		return totalRecaudado;	
+	}
+
+
+	public double recaudacion(String nombreSede) {
+
+		double totalRecaudado = 0;		
+		for (Funcion funcion : funciones.values()) {
+
+			if(funcion.sede.nombre.equals(nombreSede)) {				
+				totalRecaudado += funcion.recaudacion();
+			}			
+		}
+		return totalRecaudado;
+	}
+}

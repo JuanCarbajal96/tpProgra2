@@ -1,7 +1,5 @@
 package ar.edu.ungs.prog2.ticketek;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,8 +10,7 @@ public class Ticketek implements ITicketek {
 	HashMap<String, Sede> sedes = new HashMap<>();
 	HashMap<String, Espectaculo> espectaculos = new HashMap<>();
 	HashMap<String,Usuario> usuarios = new HashMap<>();
-	private int codigoEntrada = 0; 
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
+	Integer codigoEntrada = 0; 
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
@@ -73,15 +70,16 @@ public class Ticketek implements ITicketek {
 	@Override
 	public void agregarFuncion(String nombreEspectaculo, String fecha, String sede, double precioBase) {
 
+		Fecha date = new Fecha(fecha);
 		if (!espectaculos.containsKey(nombreEspectaculo) || !sedes.containsKey(sede)) {
 
 			throw new RuntimeException("el espectaculo o la sede no estan registrados");
 		}
-		else if(espectaculos.get(nombreEspectaculo).hayFuncion(fecha)) {
+		else if(espectaculos.get(nombreEspectaculo).hayFuncion(date)) {
 
 			throw new RuntimeException("Ya existe una funcion para la fecha indicada");
 		}
-		Funcion funcion = new Funcion(fecha,sedes.get(sede),precioBase);
+		Funcion funcion = new Funcion(date ,sedes.get(sede),precioBase);
 		espectaculos.get(nombreEspectaculo).agregarFuncion(funcion);
 
 	}
@@ -90,6 +88,7 @@ public class Ticketek implements ITicketek {
 	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contrasenia,
 			int cantidadEntradas) {
 
+		Fecha date = new Fecha(fecha);
 		// Verificar si el usuario existe y la contraseña es correcta
 		if (usuarios.get(email) == null || !usuarios.get(email).contraseña.equals(contrasenia)) {
 			throw new RuntimeException("Usuario no encontrado o contraseña incorrecta");
@@ -99,21 +98,21 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("El espectáculo no existe");
 		}
 		// Verificar si la función existe.        
-		if (!espectaculos.get(nombreEspectaculo).hayFuncion(fecha)){
+		if (!espectaculos.get(nombreEspectaculo).hayFuncion(date)){
 			throw new RuntimeException("No hay funcion para la fecha especificada");
 		}
 
 		//Calcula el precio de la entrada para Estadios.
-		double precio = espectaculos.get(nombreEspectaculo).precioFuncion(fecha);
+		double precio = espectaculos.get(nombreEspectaculo).precioFuncion(date);
 
 		List<IEntrada> nuevasEntradas = new ArrayList<>();
 		Usuario user = usuarios.get(email);
-		LocalDate date = LocalDate.parse(fecha,formatter);
+//		LocalDate date = LocalDate.parse(fecha,formatter);
 
 		for (int i = 0; i < cantidadEntradas; i++) {
 			codigoEntrada++;// reemplazar por una lógica real
-			Sede sede = espectaculos.get(nombreEspectaculo).sedeFuncion(fecha);
-			IEntrada entrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sede, precio,user);
+			Sede sede = espectaculos.get(nombreEspectaculo).sedeFuncion(date);
+			IEntrada entrada = new Entrada(codigoEntrada, nombreEspectaculo, date, sede, precio,user);
 			user.entradas.put(codigoEntrada, entrada);
 			nuevasEntradas.add(entrada);
 			espectaculos.get(nombreEspectaculo).agregarVenta(date,"Campo");
@@ -129,6 +128,7 @@ public class Ticketek implements ITicketek {
 	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contrasenia,
 			String sector, int[] asientos) {
 
+		Fecha date = new Fecha(fecha);
 		// Verificar si el usuario existe y la contraseña es correcta
 		if (usuarios.get(email) == null || !usuarios.get(email).contraseña.equals(contrasenia)) {
 			throw new RuntimeException("Usuario no encontrado o contraseña incorrecta");
@@ -138,18 +138,18 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("El espectáculo no existe o la sede no es correcta");
 		}
 		// Verificar si la función existe.        
-		if (!espectaculos.get(nombreEspectaculo).hayFuncion(fecha)){
+		if (!espectaculos.get(nombreEspectaculo).hayFuncion(date)){
 			throw new RuntimeException("No hay funcion para la fecha especificada");
 		}
 		//Calcula el precio de la entrada.
-		double precio = espectaculos.get(nombreEspectaculo).precioFuncion(fecha, sector);
+		double precio = espectaculos.get(nombreEspectaculo).precioFuncion(date, sector);
 
 		List<IEntrada> nuevasEntradas = new ArrayList<>();
 		Usuario user = usuarios.get(email);
 
 		for (int i = 0; i < asientos.length; i++) {
 			codigoEntrada++;
-			Sede sede = espectaculos.get(nombreEspectaculo).sedeFuncion(fecha);
+			Sede sede = espectaculos.get(nombreEspectaculo).sedeFuncion(date);
 			int fila = 0;
 			if (sede instanceof Teatro) {
 				Teatro teatro = (Teatro) sede;
@@ -159,8 +159,8 @@ public class Ticketek implements ITicketek {
 				MiniEstadio miniEstadio = (MiniEstadio) sede;
 				fila = miniEstadio.getFila(asientos[i]);
 			}
-			LocalDate date = LocalDate.parse(fecha,formatter);
-			IEntrada entrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sede, sector,fila,asientos[i],precio,user);
+//			LocalDate date = LocalDate.parse(fecha,formatter);
+			IEntrada entrada = new Entrada(codigoEntrada, nombreEspectaculo, date, sede, sector,fila,asientos[i],precio,user);
 			user.entradas.put(codigoEntrada, entrada);
 			nuevasEntradas.add(entrada);
 			espectaculos.get(nombreEspectaculo).agregarVenta(date,sector);
@@ -208,13 +208,13 @@ public class Ticketek implements ITicketek {
 
 		List<IEntrada> entradasFuturas = new ArrayList<>();		
 		Usuario usuario = usuarios.get(email);
-		LocalDate hoy = LocalDate.parse(java.time.LocalDate.now().toString());
-		hoy.format(formatter);
+//		LocalDate hoy = LocalDate.parse(java.time.LocalDate.now().toString());
+//		hoy.format(formatter);
 
 		for (IEntrada entrada : usuario.entradas.values()) {
 
 			Entrada entrad = (Entrada) entrada;
-			if(entrad.fecha.compareTo(hoy) > 0) {
+			if(entrad.fecha.esPosterior()) {
 				entradasFuturas.add(entrada);
 			}
 		}								
@@ -262,7 +262,7 @@ public class Ticketek implements ITicketek {
 
 		//Resta una entrada vendida en el Map entradasVendidas de la clase Funcion .
 		String nombreEspectaculo = entradaUsuario.nombreEspectaculo;	   
-		LocalDate fechaEspectaculo = entradaUsuario.fecha;
+		Fecha fechaEspectaculo = entradaUsuario.fecha;
 		Sede sedeEspectaculo = entradaUsuario.sede;
 		String sectorEspectaculo = entradaUsuario.sector;
 
@@ -280,6 +280,7 @@ public class Ticketek implements ITicketek {
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
 
+		Fecha date = new Fecha(fecha);
 		if (entrada == null) {
 			throw new RuntimeException("La entrada proporcionada es nula");
 		}
@@ -297,7 +298,7 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("La entrada no existe en el registro del usuario");
 		}
 
-		LocalDate date = LocalDate.parse(fecha);
+//		LocalDate date = LocalDate.parse(fecha);
 		//	Iterator<Usuario> it = usuarios.values().iterator();
 
 		for(Usuario usuario : usuarios.values()) {
@@ -316,7 +317,7 @@ public class Ticketek implements ITicketek {
 
 		String emailUsuario = dueñoEntrada.email;
 		Integer codigo = entradaUsuario.codigo;
-		LocalDate fechaEntrada = entradaUsuario.fecha;
+		Fecha fechaEntrada = entradaUsuario.fecha;
 		Sede sedeEspectaculo = entradaUsuario.sede;
 		String sectorEspectaculo = entradaUsuario.sector;
 
@@ -343,8 +344,8 @@ public class Ticketek implements ITicketek {
 		}
 
 
-		double precio = espectaculos.get(nombreEspectaculo).precioFuncion(fecha,sector);
-		IEntrada nuevaEntrada = new Entrada (codigoEntrada, nombreEspectaculo, fecha, sedeEspectaculo, sector,fila,asiento,precio,dueñoEntrada);
+		double precio = espectaculos.get(nombreEspectaculo).precioFuncion(date,sector);
+		IEntrada nuevaEntrada = new Entrada (codigoEntrada, nombreEspectaculo, date, sedeEspectaculo, sector,fila,asiento,precio,dueñoEntrada);
 		usuarios.get(emailUsuario).entradas.put(codigoEntrada, nuevaEntrada);
 
 
@@ -355,7 +356,9 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha) {
-		if (entrada == null) {
+		
+		Fecha date = new Fecha(fecha);
+		if (entrada == null) {		
 			throw new RuntimeException("La entrada proporcionada es nula");
 		}
 		Entrada entradaUsuario = (Entrada) entrada;
@@ -373,7 +376,7 @@ public class Ticketek implements ITicketek {
 		String nombreEspectaculo = entradaUsuario.nombreEspectaculo;
 		String emailUsuario = dueñoEntrada.email;
 		Integer codigo = entradaUsuario.codigo;
-		LocalDate fechaEntrada = entradaUsuario.fecha;
+		Fecha fechaEntrada = entradaUsuario.fecha;
 		Sede sedeEspectaculo = entradaUsuario.sede;
 
 		//elimina la entrada antigua.
@@ -382,7 +385,7 @@ public class Ticketek implements ITicketek {
 		//genera la nueva entrada.
 		codigoEntrada++;
 //		double precio = espectaculos.get(nombreEspectaculo).precioFuncion(fecha);
-		IEntrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, fecha, sedeEspectaculo , entradaUsuario.precio ,dueñoEntrada);
+		IEntrada nuevaEntrada = new Entrada(codigoEntrada, nombreEspectaculo, date, sedeEspectaculo , entradaUsuario.precio ,dueñoEntrada);
 		usuarios.get(emailUsuario).entradas.put(codigoEntrada, nuevaEntrada);		
 		espectaculos.get(nombreEspectaculo).agregarVenta(fechaEntrada,"Campo");
 
@@ -394,14 +397,16 @@ public class Ticketek implements ITicketek {
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fecha) {
 		
-		LocalDate date = LocalDate.parse(fecha,formatter);
+//		LocalDate date = LocalDate.parse(fecha,formatter);
+		Fecha date = new Fecha(fecha);
 		return espectaculos.get(nombreEspectaculo).funciones.get(date).precioBase;
 	}
 
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fecha, String sector) {
 		
-		return espectaculos.get(nombreEspectaculo).precioFuncion(fecha,sector);
+		Fecha date = new Fecha(fecha);
+		return espectaculos.get(nombreEspectaculo).precioFuncion(date,sector);
 	}
 
 	@Override

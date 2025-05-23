@@ -1,37 +1,34 @@
 package ar.edu.ungs.prog2.ticketek;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class Entrada implements IEntrada {
 	
 	Usuario dueñoEntrada;
 	Integer codigo;
 	String nombreEspectaculo;
-	LocalDate fecha;
+	Fecha fecha;
 	Sede sede;
 	String sector;
 	double precio;
 	Integer nroAsiento;
 	int nroFila;
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
 		
 
-	public Entrada(Integer codigo, String nombreEspectaculo, String fecha, Sede sede, double precio, Usuario dueño) {
+	public Entrada(Integer codigo, String nombreEspectaculo, Fecha fecha, Sede sede, double precio, Usuario dueño) {
 		super();
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
-		this.fecha = LocalDate.parse(fecha,formatter);
+		this.fecha = fecha;
 		this.sede = sede;
 		this.precio = precio;
 		this.dueñoEntrada = dueño;
 	}
 
-	public Entrada(Integer codigo, String nombreEspectaculo, String fecha, Sede sede,String sector,int nroFila, int nroAsiento, double precio, Usuario dueño) {
+	public Entrada(Integer codigo, String nombreEspectaculo, Fecha fecha, Sede sede,String sector,int nroFila, int nroAsiento, double precio, Usuario dueño) {
 		super();
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
-		this.fecha = LocalDate.parse(fecha,formatter);
+		this.fecha = fecha;
 		this.sede = sede;
 		this.sector = sector;
 		this.nroAsiento = nroAsiento;
@@ -60,11 +57,10 @@ public class Entrada implements IEntrada {
 	@Override
 	public String toString() {
 		
-		LocalDate hoy = LocalDate.now();
-		if (fecha.isBefore(hoy)) {
-			return "- " + codigo + " - " + nombreEspectaculo + " - " + fecha.format(formatter) + " P" + " - " + sede.nombre + " - " + this.ubicacion()  ;
+//		LocalDate hoy = LocalDate.now();
+		if (fecha.esAnterior()) {
+			return "- " + codigo + " - " + nombreEspectaculo + " - " + fecha.toString() + " P" + " - " + sede.nombre + " - " + this.ubicacion()  ;
 		}
-		return "- " + nombreEspectaculo + " - " + fecha.format(formatter) + " - " + sede.nombre + " - " + this.ubicacion() ;
-			
+		return "- " + nombreEspectaculo + " - " + fecha.toString() + " - " + sede.nombre + " - " + this.ubicacion() ;			
 	}
 }

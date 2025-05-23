@@ -1,15 +1,11 @@
 package ar.edu.ungs.prog2.ticketek;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 
 public class Espectaculo {
 
 	String nombre;
-	LinkedHashMap<LocalDate,Funcion> funciones;
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+	LinkedHashMap<Fecha,Funcion> funciones;
 
 
 	Espectaculo(String nombre){
@@ -33,10 +29,10 @@ public class Espectaculo {
 	}
 
 
-	public boolean hayFuncion(String fecha){
+	public boolean hayFuncion(Fecha fecha){
 
 		for (Funcion fun : funciones.values()) {
-			if (fun.fecha.equals(LocalDate.parse(fecha,formatter)))
+			if (fun.fecha.equals(fecha))
 				return true;
 		}
 		return false;
@@ -53,10 +49,10 @@ public class Espectaculo {
 	}
 
 
-	Sede sedeFuncion(String fecha){
+	Sede sedeFuncion(Fecha fecha){
 
 		for (Funcion funcion : funciones.values()) {
-			if (funcion.fecha.equals(LocalDate.parse(fecha,formatter))) {
+			if (funcion.fecha.equals(fecha)) {
 				return funcion.sede;
 			}
 		}
@@ -64,10 +60,10 @@ public class Espectaculo {
 	}
 
 
-	double precioFuncion(String fecha) {
+	double precioFuncion(Fecha fecha) {
 
 		for (Funcion funcion : funciones.values()) {
-			if (funcion.fecha.equals(LocalDate.parse(fecha, formatter))) {
+			if (funcion.fecha.equals(fecha)) {
 				return funcion.precioBase;
 			}
 		}
@@ -76,11 +72,11 @@ public class Espectaculo {
 	}
 
 
-	double precioFuncion(String fecha, String sector) {
+	double precioFuncion(Fecha fecha, String sector) {
 
-		LocalDate date = LocalDate.parse(fecha,formatter);
+//		LocalDate date = LocalDate.parse(fecha,formatter);
 		for ( Funcion funcion : funciones.values()) {
-			if(funcion.fecha.equals(date))
+			if(funcion.fecha.equals(fecha))
 				if(funcion.sede.getClass().getSimpleName().equals("Teatro")) {
 					return funcion.precio(sector);
 				}
@@ -93,14 +89,14 @@ public class Espectaculo {
 		throw new RuntimeException("No se encontró función para la fecha: " + fecha);
 	}
 
-	public void agregarVenta(LocalDate fecha,String sector) {
+	public void agregarVenta(Fecha fecha,String sector) {
 		for ( Funcion funcion : funciones.values()) 
 			if(funcion.fecha.equals(fecha)) {
 				funcion.agregarVenta(sector);
 			}
 	}
 
-	public void quitarVenta(LocalDate fecha,String sector){
+	public void quitarVenta(Fecha fecha,String sector){
 
 		Funcion funcion = funciones.get(fecha);
 		funcion.quitarVenta(sector);

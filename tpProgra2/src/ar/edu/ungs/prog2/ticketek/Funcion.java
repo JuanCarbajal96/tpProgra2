@@ -1,21 +1,18 @@
 package ar.edu.ungs.prog2.ticketek;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Funcion {
 
-	LocalDate fecha;
+	Fecha fecha;
 	Sede sede;
 	LinkedHashMap<String,Integer> entradasVendidas = new LinkedHashMap<>();
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
 	double precioBase;
 
-	Funcion(String fecha,Sede sede,double precioBase) {
+	Funcion(Fecha fecha,Sede sede,double precioBase) {
 
-		this.fecha = LocalDate.parse(fecha, formatter);
+		this.fecha = fecha;
 		this.sede = sede;
 		this.precioBase = precioBase;
 
@@ -35,7 +32,7 @@ public class Funcion {
 	@Override
 	public String toString() {
 
-		StringBuilder info = new StringBuilder(" - " +"(" + fecha.format(formatter) + ") " + sede.nombre + " - ");
+		StringBuilder info = new StringBuilder(" - " +"(" + fecha.toString() + ") " + sede.nombre + " - ");
 
 		//Si la sede es en un estadio devuelve fecha, nombre de sede, entradas vendidas y capacidad estadio.
 		if ( sede.getClass().getSimpleName().equals("Estadio")) {
