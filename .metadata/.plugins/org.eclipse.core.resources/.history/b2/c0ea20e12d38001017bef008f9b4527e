@@ -1,0 +1,53 @@
+package ar.edu.ungs.prog2.ticketek;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+
+public class Fecha {
+	
+	LocalDate fecha;
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
+	
+	Fecha (String fecha){
+		
+		this.fecha = LocalDate.parse(fecha, formatter);
+	}
+	
+	public boolean esPosterior() {
+		
+		LocalDate hoy = LocalDate.parse(java.time.LocalDate.now().toString());
+		hoy.format(formatter);
+		
+		return this.fecha.compareTo(hoy) > 0;
+	}
+	
+	public String toString() {
+		return fecha.format(formatter);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(fecha);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Fecha other = (Fecha) obj;
+		return Objects.equals(fecha, other.fecha);
+	}
+
+	public boolean esAnterior() {
+		LocalDate hoy = LocalDate.now();
+		return this.fecha.isBefore(hoy);
+	}
+
+	
+	
+}

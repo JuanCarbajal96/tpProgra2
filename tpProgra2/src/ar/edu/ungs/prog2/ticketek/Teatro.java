@@ -11,42 +11,27 @@ public class Teatro extends Sede {
 			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
 		super(nombre, direccion, capacidadMaxima);
 
-
-
 		this.asientosPorFila = asientosPorFila;
-
 		this.sectores = new ArrayList<Sector>();
-
 		for (int i = 0; i < sectores.length; i++) {
 
 			Sector sector = new Sector(sectores[i],capacidad[i],porcentajeAdicional[i]);
-
 			this.sectores.add(sector);
 		} 
 	}
-	@Override
+
+	
 	public int capacidadSector(String nombreSector) {
 
 		for (Sector sector : sectores) {
-
 			if (sector.nombre.equals(nombreSector)) {
-
 				return sector.capacidad;
 			}			
 		}		
 		return 0;		
 	}
-
-
-
-	@Override
-	public String toString() {
-
-		return nombre ;
-
-
-	}
-	@Override
+	
+	
 	public double porcentajeAdicional(String sector) {
 
 		for (Sector sec : sectores) {
@@ -57,10 +42,15 @@ public class Teatro extends Sede {
 		}
 		return 0;
 	}
-	public int getFila(int asiento) {
+	public int fila(int asiento) {
 			
 		return asiento / asientosPorFila;
 	}
 
+	@Override
+	public String toString() {
+
+		return nombre ;
+	}
 
 }

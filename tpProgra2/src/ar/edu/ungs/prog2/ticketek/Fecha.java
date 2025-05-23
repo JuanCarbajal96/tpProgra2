@@ -22,6 +22,13 @@ public class Fecha {
 		return this.fecha.compareTo(hoy) > 0;
 	}
 	
+	
+	public boolean esAnterior() {
+		LocalDate hoy = LocalDate.now();
+		return this.fecha.isBefore(hoy);
+	}
+	
+	
 	public String toString() {
 		return fecha.format(formatter);
 	}
@@ -42,12 +49,4 @@ public class Fecha {
 		Fecha other = (Fecha) obj;
 		return Objects.equals(fecha, other.fecha);
 	}
-
-	public boolean esAnterior() {
-		LocalDate hoy = LocalDate.now();
-		return this.fecha.isBefore(hoy);
-	}
-
-	
-	
 }

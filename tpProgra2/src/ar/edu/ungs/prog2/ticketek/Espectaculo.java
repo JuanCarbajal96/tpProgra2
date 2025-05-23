@@ -74,18 +74,11 @@ public class Espectaculo {
 
 	double precioFuncion(Fecha fecha, String sector) {
 
-//		LocalDate date = LocalDate.parse(fecha,formatter);
 		for ( Funcion funcion : funciones.values()) {
 			if(funcion.fecha.equals(fecha))
-				if(funcion.sede.getClass().getSimpleName().equals("Teatro")) {
-					return funcion.precio(sector);
-				}
-				else if(funcion.sede.getClass().getSimpleName().equals("MiniEstadio")) {
-
-					MiniEstadio miniEstadio = (MiniEstadio) funcion.sede;
-					return (funcion.precioBase + miniEstadio.getvalorFijoConsumicion()) * (1 + (funcion.sede.porcentajeAdicional(sector)/100)); 
-				}
+				return funcion.precio(sector);
 		}
+
 		throw new RuntimeException("No se encontró función para la fecha: " + fecha);
 	}
 
@@ -98,8 +91,7 @@ public class Espectaculo {
 
 	public void quitarVenta(Fecha fecha,String sector){
 
-		Funcion funcion = funciones.get(fecha);
-		funcion.quitarVenta(sector);
+		funciones.get(fecha).quitarVenta(sector);
 	}
 
 

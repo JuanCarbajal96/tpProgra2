@@ -47,33 +47,54 @@ public class Funcion {
 
 				String nombreSector = entrada.getKey();
 				Integer cantidadVendida = entrada.getValue();
-				int capacidad = sede.capacidadSector(nombreSector);
+
 				info.append(nombreSector);
 				info.append(": ");
 				info.append(cantidadVendida);
 				info.append("/");
-				info.append(capacidad);
+
+				if (sede instanceof Teatro) {
+					Teatro teatro = (Teatro) sede;
+					int capacidad = teatro.capacidadSector(nombreSector);
+					info.append(capacidad);
+				}
+				else if(sede instanceof MiniEstadio) {
+
+					MiniEstadio mini = (MiniEstadio) sede;
+					int capacidad = mini.capacidadSector(nombreSector);
+					info.append(capacidad);
+				}
+
 				if (!nombreSector.equals("Alta"))
 					info.append(" | ");
 			}
 		}
 		return info.toString();  
 	}
-	
- 
+
+
 	public double precio(String sector) {
 
-		return this.precioBase * (1 + (this.sede.porcentajeAdicional(sector)/100));
+		if(this.sede.getClass().getSimpleName().equals("MiniEstadio")) {
+
+			MiniEstadio miniEstadio = (MiniEstadio) this.sede;
+			return (this.precioBase + miniEstadio.valorFijoConsumicion) * (1 + (miniEstadio.porcentajeAdicional(sector)/100)); 
+		}
+		else {
+			Teatro teatro = (Teatro) this.sede;
+			return this.precioBase * (1 + (teatro.porcentajeAdicional(sector)/100));
+		}
 	}
 
-	
+
 	public void agregarVenta(String nombreSector) {
 
 		entradasVendidas.put(nombreSector, entradasVendidas.get(nombreSector) + 1);	
 	}
-	
+
 
 	public void quitarVenta(String sector) {
+		
 		Integer cantidadActual = entradasVendidas.get(sector);
 		if (cantidadActual > 0)
 			entradasVendidas.put(sector, entradasVendidas.get(sector) - 1);
@@ -81,26 +102,27 @@ public class Funcion {
 
 
 	public double recaudacion() {
-	    double recaudacion = 0;
+		
+		double recaudacion = 0;
+		for (Map.Entry<String, Integer> entrada : entradasVendidas.entrySet()) {
+			String sector = entrada.getKey();
+			int totalVendido = entrada.getValue();
 
-	    for (Map.Entry<String, Integer> entrada : entradasVendidas.entrySet()) {
-	        String sector = entrada.getKey();
-	        int totalVendido = entrada.getValue();
+			if (this.sede instanceof Estadio) {
+				recaudacion += precioBase * totalVendido;
+			} 
+			else if (sede instanceof Teatro) {
+				Teatro teatro = (Teatro) this.sede;
+				double adicional = 1 + teatro.porcentajeAdicional(sector) / 100.0;
+				recaudacion += totalVendido * (precioBase * ( adicional));
+			} 
+			else if (sede instanceof MiniEstadio) {
+				MiniEstadio mini = (MiniEstadio) sede;
+				double adicional = 1 + mini.porcentajeAdicional(sector) / 100.0;
+				recaudacion += totalVendido * ((precioBase * ( adicional)) + mini.valorFijoConsumicion);
+			}
+		}
 
-	        if (sede instanceof Estadio) {
-	            recaudacion += precioBase * totalVendido;
-	        } 
-	        else if (sede instanceof Teatro) {
-	            double adicional = 1 + sede.porcentajeAdicional(sector) / 100.0;
-	            recaudacion += totalVendido * (precioBase * ( adicional));
-	        } 
-	        else if (sede instanceof MiniEstadio) {
-	            MiniEstadio mini = (MiniEstadio) sede;
-	            double adicional = 1 + sede.porcentajeAdicional(sector) / 100.0;
-	            recaudacion += totalVendido * ((precioBase * ( adicional)) + mini.getvalorFijoConsumicion());
-	        }
-	    }
-
-	    return recaudacion;
+		return recaudacion;
 	}
 }

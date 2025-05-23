@@ -23,10 +23,8 @@ public class MiniEstadio extends Sede {
 		}
 	}
 
-	@Override
+
 	public int capacidadSector(String nombreSector) {
-
-
 
 		for (Sector sector : sectores) {
 			if(sector.nombre.equals(nombreSector)) {
@@ -37,13 +35,7 @@ public class MiniEstadio extends Sede {
 		return 0;
 	}
 
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
+	
 	public double porcentajeAdicional(String nombreSede) {
 		for (Sector sec : sectores) {
 
@@ -54,17 +46,15 @@ public class MiniEstadio extends Sede {
 		return 0;
 	}
 
-	public int getFila(int asiento) {
+	public int fila(int asiento) {
 
 		return asiento / asientosPorFila;
 	}
 
-	public double getvalorFijoConsumicion() {
-		
-		return this.valorFijoConsumicion;
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-
-
-
-
 }

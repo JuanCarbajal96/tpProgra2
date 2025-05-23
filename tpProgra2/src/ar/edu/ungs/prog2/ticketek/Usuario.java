@@ -18,8 +18,4 @@ public class Usuario {
 		this.contraseña = contraseña;
 	}
 
-	public IEntrada entradasFuturas() {
-		
-		return null;
-	}
 }

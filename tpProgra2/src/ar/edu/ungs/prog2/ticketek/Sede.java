@@ -13,11 +13,9 @@ public abstract class Sede {
 		
 	}
 	
-	public abstract int capacidadSector(String nombreSector);
-
-			
-	public abstract double porcentajeAdicional(String nombreSede);
-
+	@Override
+	public abstract String toString();
+		
 	
 	
 }

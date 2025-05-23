@@ -12,4 +12,5 @@
     <fullyQualifiedTypeName name="java.util.HashMap"/>
     <fullyQualifiedTypeName name="java.util.LinkedHashMap"/>
     <fullyQualifiedTypeName name="java.time.LocalDate"/>
+    <fullyQualifiedTypeName name="ar.edu.ungs.prog2.ticketek.MiniEstadio"/>
 </qualifiedTypeNameHistroy>
