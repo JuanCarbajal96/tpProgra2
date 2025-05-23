@@ -2,55 +2,60 @@ package ar.edu.ungs.prog2.ticketek;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
 public class Espectaculo {
 
 	String nombre;
-	LinkedHashSet<Funcion> funciones;
+	LinkedHashMap<LocalDate,Funcion> funciones;
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 
+	
 	Espectaculo(String nombre){
 
 		this.nombre = nombre;
-		this.funciones = new LinkedHashSet<>();;
+		this.funciones = new LinkedHashMap<>();;
 	}
 
+	
 	@Override 
 	public String toString() {
 
 		StringBuilder info = new StringBuilder();
 
-		for (Funcion funcion : funciones) {
+		for (Funcion funcion : funciones.values()) {
 
 			info.append(funcion.toString());
 			info.append("\n");
 		}
 		return info.toString();
-
 	}
 
+	
 	public boolean hayFuncion(String fecha){
 
-		for (Funcion fun : funciones) {
+		for (Funcion fun : funciones.values()) {
 			if (fun.fecha.equals(LocalDate.parse(fecha,formatter)))
 				return true;
 		}
 		return false;
 	}
 
+	
 	void agregarFuncion(Funcion funcion) {
 
-		for (Funcion fun : funciones) {
+		for (Funcion fun : funciones.values()) {
 			if (fun.fecha.equals(funcion.fecha) && fun.sede.equals(funcion.sede))
 				throw new RuntimeException ("La fecha no esta disponible");
 		}
-		funciones.add(funcion);
+		funciones.put(funcion.fecha,funcion);
 	}
 
+	
 	Sede sedeFuncion(String fecha){
 
-		for (Funcion funcion : funciones) {
+		for (Funcion funcion : funciones.values()) {
 			if (funcion.fecha.equals(LocalDate.parse(fecha,formatter))) {
 				return funcion.sede;
 			}
@@ -58,9 +63,10 @@ public class Espectaculo {
 		return null;
 	}
 
+	
 	double precioFuncion(String fecha) {
 
-		for (Funcion funcion : funciones) {
+		for (Funcion funcion : funciones.values()) {
 			if (funcion.fecha.equals(LocalDate.parse(fecha, formatter))) {
 				return funcion.precioBase;
 			}
@@ -73,10 +79,10 @@ public class Espectaculo {
 	double precioFuncion(String fecha, String sector) {
 
 		LocalDate date = LocalDate.parse(fecha,formatter);
-		for ( Funcion funcion : funciones) {
+		for ( Funcion funcion : funciones.values()) {
 			if(funcion.fecha.equals(date))
 				if(funcion.sede.getClass().getSimpleName().equals("Teatro")) {
-					return funcion.precioBase * (1 + (funcion.sede.porcentajeAdicional(sector)/100));
+					return funcion.precio(sector);
 				}
 				else if(funcion.sede.getClass().getSimpleName().equals("MiniEstadio")) {
 
@@ -87,20 +93,16 @@ public class Espectaculo {
 		throw new RuntimeException("No se encontró función para la fecha: " + fecha);
 	}
 
-	public void agregarEntradaVendida(String sector,String fecha) {
-		for ( Funcion funcion : funciones) 
-			if(funcion.fecha.equals(LocalDate.parse(fecha,formatter))) {
-				funcion.agregarEntradaVendida(sector);
-
+	public void agregarVenta(LocalDate fecha,String sector) {
+		for ( Funcion funcion : funciones.values()) 
+			if(funcion.fecha.equals(fecha)) {
+				funcion.agregarVenta(sector);
 			}
-
 	}
-
-
-
-
+	
+	public void quitarVenta(LocalDate fecha,String sector){
+		
+		Funcion funcion = funciones.get(fecha);
+		funcion.quitarVenta(sector);
+	}
 }
-
-
-
-

@@ -5,27 +5,29 @@ import java.time.format.DateTimeFormatter;
 
 public class Entrada implements IEntrada {
 	
+	Usuario dueñoEntrada;
 	Integer codigo;
 	String nombreEspectaculo;
 	LocalDate fecha;
 	Sede sede;
 	String sector;
 	double precio;
-	int nroAsiento;
+	Integer nroAsiento;
 	int nroFila;
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
 		
 
-	public Entrada(Integer codigo, String nombreEspectaculo, String fecha, Sede sede, double precio) {
+	public Entrada(Integer codigo, String nombreEspectaculo, String fecha, Sede sede, double precio, Usuario dueño) {
 		super();
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
 		this.fecha = LocalDate.parse(fecha,formatter);
 		this.sede = sede;
 		this.precio = precio;
+		this.dueñoEntrada = dueño;
 	}
 
-	public Entrada(Integer codigo, String nombreEspectaculo, String fecha, Sede sede,String sector,int nroFila, int nroAsiento, double precio) {
+	public Entrada(Integer codigo, String nombreEspectaculo, String fecha, Sede sede,String sector,int nroFila, int nroAsiento, double precio, Usuario dueño) {
 		super();
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
@@ -35,6 +37,7 @@ public class Entrada implements IEntrada {
 		this.nroAsiento = nroAsiento;
 		this.precio = precio;
 		this.nroFila = nroFila;
+		this.dueñoEntrada = dueño;
 	}
 	
 
@@ -59,9 +62,9 @@ public class Entrada implements IEntrada {
 		
 		LocalDate hoy = LocalDate.now();
 		if (fecha.isBefore(hoy)) {
-			return "- " + codigo + " - " + nombreEspectaculo + " - " + fecha + " P" + " - " + sede.nombre + " - " + this.ubicacion() ;
+			return "- " + codigo + " - " + nombreEspectaculo + " - " + fecha.format(formatter) + " P" + " - " + sede.nombre + " - " + this.ubicacion()  ;
 		}
-		return "- " + codigo + " - " + nombreEspectaculo + " - " + fecha + " - " + sede.nombre + " - " + this.ubicacion() ;
+		return "- " + nombreEspectaculo + " - " + fecha.format(formatter) + " - " + sede.nombre + " - " + this.ubicacion() ;
 			
 	}
 }
