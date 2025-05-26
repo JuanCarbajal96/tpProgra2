@@ -1,17 +1,22 @@
 package ar.edu.ungs.prog2.ticketek;
 
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 public class Espectaculo {
 
-	String nombre;
-	LinkedHashMap<Fecha,Funcion> funciones;
+	private final String nombre;
+	protected LinkedHashMap<Fecha,Funcion> funciones;
+	protected double recaudacionTotal;
+	protected LinkedHashMap<String,Double> recaudacionPorSede;
 
 
-	Espectaculo(String nombre){
+	public Espectaculo(String nombre){
 
 		this.nombre = nombre;
-		this.funciones = new LinkedHashMap<>();;
+		this.funciones = new LinkedHashMap<>();
+		this.recaudacionPorSede = new LinkedHashMap<>();
+
 	}
 
 
@@ -31,62 +36,34 @@ public class Espectaculo {
 
 	public boolean hayFuncion(Fecha fecha){
 
-		for (Funcion fun : funciones.values()) {
-			if (fun.fecha.equals(fecha))
-				return true;
-		}
-		return false;
+		return funciones.get(fecha) != null ;
 	}
 
 
 	void agregarFuncion(Funcion funcion) {
 
-		for (Funcion fun : funciones.values()) {
-			if (fun.fecha.equals(funcion.fecha) && fun.sede.equals(funcion.sede))
-				throw new RuntimeException ("La fecha no esta disponible");
-		}
-		funciones.put(funcion.fecha,funcion);
+		if (funciones.get(funcion.getFecha() ) != null)
+			throw new RuntimeException ("La fecha no esta disponible");
+
+		funciones.put(funcion.getFecha(),funcion);
 	}
 
 
 	Sede sedeFuncion(Fecha fecha){
 
-		for (Funcion funcion : funciones.values()) {
-			if (funcion.fecha.equals(fecha)) {
-				return funcion.sede;
-			}
-		}
-		return null;
-	}
-
-
-	double precioFuncion(Fecha fecha) {
-
-		for (Funcion funcion : funciones.values()) {
-			if (funcion.fecha.equals(fecha)) {
-				return funcion.precioBase;
-			}
-		}
-
-		throw new RuntimeException("No se encontró función para la fecha: " + fecha);
+		return funciones.get(fecha).getSede();
 	}
 
 
 	double precioFuncion(Fecha fecha, String sector) {
 
-		for ( Funcion funcion : funciones.values()) {
-			if(funcion.fecha.equals(fecha))
-				return funcion.precio(sector);
-		}
-
-		throw new RuntimeException("No se encontró función para la fecha: " + fecha);
+		return funciones.get(fecha).precio(sector);
 	}
 
+
 	public void agregarVenta(Fecha fecha,String sector) {
-		for ( Funcion funcion : funciones.values()) 
-			if(funcion.fecha.equals(fecha)) {
-				funcion.agregarVenta(sector);
-			}
+
+		funciones.get(fecha).agregarVenta(sector);
 	}
 
 	public void quitarVenta(Fecha fecha,String sector){
@@ -95,26 +72,37 @@ public class Espectaculo {
 	}
 
 
-	public double recaudacion() {
+	public void agregarRecaudacion(Fecha date, String nombreSede,String sector){
 
-		double totalRecaudado = 0;
-		for (Funcion funcion : funciones.values()) {
+		Double precioEntrada =  funciones.get(date).precio(sector);
+		recaudacionPorSede.put(nombreSede, recaudacionPorSede.get(nombreSede) + precioEntrada);
+		recaudacionTotal+=precioEntrada;
 
-			totalRecaudado += funcion.recaudacion();		
-		}
-		return totalRecaudado;	
+	}
+
+	public void agregarRecaudacion(Fecha date) {
+
+		double precioEntradaEstadio =funciones.get(date).getPrecioBase();
+		recaudacionTotal += precioEntradaEstadio;
 	}
 
 
-	public double recaudacion(String nombreSede) {
-
-		double totalRecaudado = 0;		
-		for (Funcion funcion : funciones.values()) {
-
-			if(funcion.sede.nombre.equals(nombreSede)) {				
-				totalRecaudado += funcion.recaudacion();
-			}			
-		}
-		return totalRecaudado;
+	@Override
+	public int hashCode() {
+		return Objects.hash(nombre);
 	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Espectaculo other = (Espectaculo) obj;
+		return Objects.equals(nombre, other.nombre);
+	}
+
 }

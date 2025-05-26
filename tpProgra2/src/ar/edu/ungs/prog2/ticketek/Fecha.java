@@ -5,30 +5,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Fecha {
-	
-	LocalDate fecha;
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
-	
-	Fecha (String fecha){
-		
+
+	private LocalDate fecha;
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy" );
+
+	public Fecha (String fecha){
+
 		this.fecha = LocalDate.parse(fecha, formatter);
 	}
-	
+
 	public boolean esPosterior() {
-		
+
 		LocalDate hoy = LocalDate.parse(java.time.LocalDate.now().toString());
 		hoy.format(formatter);
-		
+
 		return this.fecha.compareTo(hoy) > 0;
 	}
-	
-	
+
+
 	public boolean esAnterior() {
 		LocalDate hoy = LocalDate.now();
 		return this.fecha.isBefore(hoy);
 	}
-	
-	
+
+
 	public String toString() {
 		return fecha.format(formatter);
 	}

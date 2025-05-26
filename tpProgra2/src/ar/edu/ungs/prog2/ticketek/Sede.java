@@ -4,7 +4,7 @@ public abstract class Sede {
 	
 	protected int capacidadMaxima;
 	protected String direccion;
-	protected String nombre;
+	protected final String nombre;
 	
 	public Sede(String nombre, String direccion, int capacidadMaxima ) {
 		this.capacidadMaxima = capacidadMaxima;
@@ -16,6 +16,10 @@ public abstract class Sede {
 	@Override
 	public abstract String toString();
 		
+	@Override
+	public abstract int hashCode() ;
 	
-	
+
+	@Override
+	public abstract boolean equals(Object obj);		
 }

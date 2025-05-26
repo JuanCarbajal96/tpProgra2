@@ -1,13 +1,15 @@
 package ar.edu.ungs.prog2.ticketek;
 
-import java.util.ArrayList;
+
+import java.util.LinkedHashMap;
+import java.util.Objects;
 
 public class MiniEstadio extends Sede {
 
 	protected int asientosPorFila;
 	protected int cantidadDePuestos;
 	protected double valorFijoConsumicion;
-	protected ArrayList<Sector> sectores;
+	protected LinkedHashMap<String, Sector> sectores;
 
 	public MiniEstadio(String nombre, String direccion, int capacidadMaxima,int asientosPorFila, int cantidadDePuestos, double precioConsumicion, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
 		super(nombre, direccion, capacidadMaxima);
@@ -15,36 +17,26 @@ public class MiniEstadio extends Sede {
 		this.cantidadDePuestos = cantidadDePuestos;
 		this.valorFijoConsumicion = precioConsumicion;
 
-		this.sectores = new ArrayList<>();
+		this.sectores = new LinkedHashMap<>();
 		for (int i = 0; i < sectores.length; i++) {
 
 			Sector sector = new Sector(sectores[i],capacidad[i],porcentajeAdicional[i], precioConsumicion);
-			this.sectores.add(sector);
+			this.sectores.put(sectores[i], sector);
 		}
 	}
 
 
 	public int capacidadSector(String nombreSector) {
 
-		for (Sector sector : sectores) {
-			if(sector.nombre.equals(nombreSector)) {
-
-				return sector.capacidad;				
-			}
-		}
-		return 0;
+	return sectores.get(nombreSector).capacidad;
 	}
-
+		
 	
-	public double porcentajeAdicional(String nombreSede) {
-		for (Sector sec : sectores) {
-
-			if(sec.nombre.equals(nombreSede)) {
-				return sec.porcentajeAdicional;
-			}			
-		}
-		return 0;
+	public double porcentajeAdicional(String NombreSector) {
+			
+		    return sectores.get(NombreSector).porcentajeAdicional;
 	}
+
 
 	public int fila(int asiento) {
 
@@ -54,7 +46,33 @@ public class MiniEstadio extends Sede {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "asientosPorFila: " + asientosPorFila + ", cantidadDePuestos: " + cantidadDePuestos
+				+ ", valorFijoConsumicion: " + valorFijoConsumicion + ", sectores: " + sectores + ", capacidadMaxima: "
+				+ capacidadMaxima + ", direccion: " + direccion + ", nombre: " + nombre;
 	}
+
+
+	@Override
+	public int hashCode() {
+		
+		return Objects.hash(nombre);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MiniEstadio other = (MiniEstadio) obj;
+		return Objects.equals(nombre, other.nombre);
+	}
+
+
+	
+
+	
 }

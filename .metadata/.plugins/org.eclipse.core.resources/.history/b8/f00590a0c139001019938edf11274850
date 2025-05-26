@@ -1,0 +1,100 @@
+package ar.edu.ungs.prog2.ticketek;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
+
+public class MiniEstadio extends Sede {
+
+	protected int asientosPorFila;
+	protected int cantidadDePuestos;
+	protected double valorFijoConsumicion;
+	protected HashMap<String, Sector> sectores;
+
+	public MiniEstadio(String nombre, String direccion, int capacidadMaxima,int asientosPorFila, int cantidadDePuestos, double precioConsumicion, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
+		super(nombre, direccion, capacidadMaxima);
+		this.asientosPorFila = asientosPorFila;
+		this.cantidadDePuestos = cantidadDePuestos;
+		this.valorFijoConsumicion = precioConsumicion;
+
+		this.sectores = new HashMap<>();
+		for (int i = 0; i < sectores.length; i++) {
+
+			Sector sector = new Sector(sectores[i],capacidad[i],porcentajeAdicional[i], precioConsumicion);
+			this.sectores.put(sectores[i], sector);
+		}
+	}
+
+
+	public int capacidadSector(String nombreSector) {
+
+	return sectores.get(nombreSector).capacidad;
+	}
+		
+		//		for (Sector sector : sectores) {
+//			if(sector.nombre.equals(nombreSector)) {
+//
+//				return sector.capacidad;				
+//			}
+//		}
+//		return 0;
+//	}
+
+	
+	public double porcentajeAdicional(String NombreSector) {
+		
+		
+		    Sector sector = sectores.get(NombreSector);
+		    if (sector == null) {
+		        throw new IllegalArgumentException("No existe el sector: " + NombreSector);
+		    }
+		    return sector.porcentajeAdicional;
+		}
+
+		//		for (Sector sec : sectores) {
+//
+//			if(sec.nombre.equals(nombreSede)) {
+//				return sec.porcentajeAdicional;
+//			}			
+//		}
+//		return 0;
+//	}
+
+	public int fila(int asiento) {
+
+		return asiento / asientosPorFila;
+	}
+
+
+	@Override
+	public String toString() {
+		return "asientosPorFila: " + asientosPorFila + ", cantidadDePuestos: " + cantidadDePuestos
+				+ ", valorFijoConsumicion: " + valorFijoConsumicion + ", sectores: " + sectores + ", capacidadMaxima: "
+				+ capacidadMaxima + ", direccion: " + direccion + ", nombre: " + nombre;
+	}
+
+
+	@Override
+	public int hashCode() {
+		
+		return Objects.hash(nombre);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MiniEstadio other = (MiniEstadio) obj;
+		return Objects.equals(nombre, other.nombre);
+	}
+
+
+	
+
+	
+}

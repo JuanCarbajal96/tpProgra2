@@ -2,15 +2,17 @@ package ar.edu.ungs.prog2.ticketek;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Funcion {
 
-	Fecha fecha;
-	Sede sede;
-	LinkedHashMap<String,Integer> entradasVendidas = new LinkedHashMap<>();
-	double precioBase;
+	private final Fecha fecha;
+	private final Sede sede;
+	private final double precioBase;
 
-	Funcion(Fecha fecha,Sede sede,double precioBase) {
+	protected LinkedHashMap<String,Integer> entradasVendidas = new LinkedHashMap<>();
+
+	public Funcion(Fecha fecha,Sede sede,double precioBase) {
 
 		this.fecha = fecha;
 		this.sede = sede;
@@ -29,6 +31,51 @@ public class Funcion {
 	}
 
 
+	public double precio(String sector) {
+
+		if(this.sede.getClass().getSimpleName().equals("MiniEstadio")) {
+
+			MiniEstadio miniEstadio = (MiniEstadio) this.sede;
+			return (this.precioBase * (1 + miniEstadio.porcentajeAdicional(sector)/100)) + miniEstadio.valorFijoConsumicion; 
+		}
+		else {
+			Teatro teatro = (Teatro) this.sede;
+			return this.precioBase * (1 + (teatro.porcentajeAdicional(sector)/100));
+		}
+	}
+
+
+	public void agregarVenta(String nombreSector) {
+
+		entradasVendidas.put(nombreSector, entradasVendidas.get(nombreSector) + 1);	
+		
+	}
+
+
+	public void quitarVenta(String sector) {
+		
+		Integer cantidadActual = entradasVendidas.get(sector);
+		if (cantidadActual > 0)
+			entradasVendidas.put(sector, entradasVendidas.get(sector) - 1);
+	}
+
+	
+	public Fecha getFecha() {
+		
+		return this.fecha;
+	}
+	
+
+	public double getPrecioBase() {
+	
+		return this.precioBase;
+	}
+	
+	public Sede getSede() {
+		
+		return this.sede;
+	}
+	
 	@Override
 	public String toString() {
 
@@ -71,58 +118,23 @@ public class Funcion {
 		}
 		return info.toString();  
 	}
-
-
-	public double precio(String sector) {
-
-		if(this.sede.getClass().getSimpleName().equals("MiniEstadio")) {
-
-			MiniEstadio miniEstadio = (MiniEstadio) this.sede;
-			return (this.precioBase + miniEstadio.valorFijoConsumicion) * (1 + (miniEstadio.porcentajeAdicional(sector)/100)); 
-		}
-		else {
-			Teatro teatro = (Teatro) this.sede;
-			return this.precioBase * (1 + (teatro.porcentajeAdicional(sector)/100));
-		}
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(fecha, sede);
 	}
 
 
-	public void agregarVenta(String nombreSector) {
-
-		entradasVendidas.put(nombreSector, entradasVendidas.get(nombreSector) + 1);	
-	}
-
-
-	public void quitarVenta(String sector) {
-		
-		Integer cantidadActual = entradasVendidas.get(sector);
-		if (cantidadActual > 0)
-			entradasVendidas.put(sector, entradasVendidas.get(sector) - 1);
-	}
-
-
-	public double recaudacion() {
-		
-		double recaudacion = 0;
-		for (Map.Entry<String, Integer> entrada : entradasVendidas.entrySet()) {
-			String sector = entrada.getKey();
-			int totalVendido = entrada.getValue();
-
-			if (this.sede instanceof Estadio) {
-				recaudacion += precioBase * totalVendido;
-			} 
-			else if (sede instanceof Teatro) {
-				Teatro teatro = (Teatro) this.sede;
-				double adicional = 1 + teatro.porcentajeAdicional(sector) / 100.0;
-				recaudacion += totalVendido * (precioBase * ( adicional));
-			} 
-			else if (sede instanceof MiniEstadio) {
-				MiniEstadio mini = (MiniEstadio) sede;
-				double adicional = 1 + mini.porcentajeAdicional(sector) / 100.0;
-				recaudacion += totalVendido * ((precioBase * ( adicional)) + mini.valorFijoConsumicion);
-			}
-		}
-
-		return recaudacion;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Funcion other = (Funcion) obj;
+		return Objects.equals(fecha, other.fecha) && Objects.equals(sede, other.sede);
 	}
 }

@@ -1,14 +1,15 @@
 package ar.edu.ungs.prog2.ticketek;
 
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 public class Usuario {
 	
-	String email;
-	String nombre;
-	String apellido;
-	String contraseña;
-	LinkedHashMap <Integer,IEntrada> entradas = new LinkedHashMap<>();
+	private final String email;
+	private String nombre;
+	private String apellido;
+	private String contraseña;
+	protected LinkedHashMap <Integer,IEntrada> entradas = new LinkedHashMap<>();
 	
 	Usuario(String email,String nombre,String apellido,String contraseña){
 		
@@ -18,4 +19,38 @@ public class Usuario {
 		this.contraseña = contraseña;
 	}
 
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj) return true;
+	    if (obj == null || getClass() != obj.getClass()) return false;
+	    
+	    Usuario otro = (Usuario) obj;
+	    return Objects.equals(email, otro.email) &&
+	           Objects.equals(contraseña, otro.contraseña);
+	}
+
+	@Override
+	public int hashCode() {
+	    return Objects.hash(email, contraseña);
+	}
+
+
+	public String getNombre() {
+		return this.nombre;
+	}
+
+
+	public String getApellido() {
+		return this.apellido;
+	}
+	
+	public String getContraseña() {
+		return this.contraseña;
+	}
+
+
+	public String getEmail() {		
+		return this.email;
+	}
 }
